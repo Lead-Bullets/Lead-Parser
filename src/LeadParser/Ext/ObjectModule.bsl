@@ -94,7 +94,7 @@ Function Kinds() Export
 	Kinds.Insert("DataPath", "String");
 	Kinds.Insert("IncludeInCommandCategoriesType", "String");
 	Kinds.Insert("QName", "String");
-	
+
 	// common
 	Kinds.Insert("LocalStringType", LocalStringType());
 	Kinds.Insert("MDListType", MDListType());
@@ -108,14 +108,14 @@ Function Kinds() Export
 	Kinds.Insert("ExtDimensionAccountingFlag", ExtDimensionAccountingFlag());
 	Kinds.Insert("AddressingAttribute", AddressingAttribute());
 	Kinds.Insert("TypeDescription", TypeDescription());
-	
+
 	// metadata objects
-	Kinds.Insert("MetaDataObject",             MetaDataObject());	
+	Kinds.Insert("MetaDataObject",             MetaDataObject());
 	Kinds.Insert("Attribute",                  Attribute());
 	Kinds.Insert("Dimension",                  Dimension());
 	Kinds.Insert("Resource",                   Resource());
 	Kinds.Insert("TabularSection",             TabularSection());
-	Kinds.Insert("Command",                    Command());	
+	Kinds.Insert("Command",                    Command());
 	Kinds.Insert("Configuration",              Configuration());
 	Kinds.Insert("Language",                   Language());
 	Kinds.Insert("AccountingRegister",         AccountingRegister());
@@ -159,7 +159,7 @@ Function Kinds() Export
 	Kinds.Insert("WSReference",                WSReference());
 	Kinds.Insert("XDTOPackage",                XDTOPackage());
 	Kinds.Insert("Form",                       Form());
-	
+
 	// logform
 	Kinds.Insert("LogForm", LogForm());
 	Kinds.Insert("FormChildItems", FormChildItems());
@@ -171,12 +171,18 @@ Function Kinds() Export
 EndFunction // Kinds()
 
 Procedure Resolve(Kinds, Object)
+	Var Keys, Item, Key;
+	Keys = New Array;
 	For Each Item In Object Do
-		If TypeOf(Item.Value) = Type("String") Then
-			Object[Item.Key] = Kinds[Item.Value]
-		ElsIf TypeOf(Item.Value) = Type("Map")
-			Or TypeOf(Item.Value) = Type("Structure") Then
-			Resolve(Kinds, Item.Value);
+		Keys.Add(Item.Key);
+	EndDo;
+	For Each Key In Keys Do
+		Value = Object[Key];
+		If TypeOf(Value) = Type("String") Then
+			Object[Key] = Kinds[Value]
+		ElsIf TypeOf(Value) = Type("Map")
+			Or TypeOf(Value) = Type("Structure") Then
+			Resolve(Kinds, Value);
 		EndIf;
 	EndDo;
 EndProcedure // Resolve()
@@ -258,7 +264,7 @@ Function ChoiceParameterLink()
 	This = Record();
 	This["Name"] = "String";
 	This["DataPath"] = "String";
-	This["ValueChange"] = Enums.LinkedValueChangeMode;
+	This["ValueChange"] = "String"; //Enums.LinkedValueChangeMode;
 	Return This;
 EndFunction // ChoiceParameterLink()
 
@@ -266,7 +272,7 @@ Function TypeLink() // todo: check
 	This = Record();
 	This["DataPath"] = "DataPath";
 	This["LinkItem"] = "Decimal";
-	This["ValueChange"] = Enums.LinkedValueChangeMode;
+	This["ValueChange"] = "String"; //Enums.LinkedValueChangeMode;
 	Return This;
 EndFunction // TypeLink()
 
@@ -283,27 +289,27 @@ Function StandardAttribute()
 	This["Synonym"]               = "LocalStringType";
 	This["Comment"]               = "String";
 	This["ToolTip"]               = "LocalStringType";
-	This["QuickChoice"]           = Enums.UseQuickChoice;
-	This["FillChecking"]          = Enums.FillChecking;
+	This["QuickChoice"]           = "String"; //Enums.UseQuickChoice;
+	This["FillChecking"]          = "String"; //Enums.FillChecking;
 	//This["FillValue"]             = ;
-	This["FillFromFillingValue"]  = Enums.Boolean;
+	This["FillFromFillingValue"]  = "Boolean"; //Enums.Boolean;
 	This["ChoiceParameterLinks"]  = "ChoiceParameterLinks";
 	//This["ChoiceParameters"]      = ;
 	This["LinkByType"]            = "TypeLink";
-	This["FullTextSearch"]        = Enums.FullTextSearchUsing;
-	This["PasswordMode"]          = Enums.Boolean;
-	This["DataHistory"]           = Enums.DataHistoryUse;
+	This["FullTextSearch"]        = "String"; //Enums.FullTextSearchUsing;
+	This["PasswordMode"]          = "Boolean"; //Enums.Boolean;
+	This["DataHistory"]           = "String"; //Enums.DataHistoryUse;
 	This["Format"]                = "LocalStringType";
 	This["EditFormat"]            = "LocalStringType";
 	This["Mask"]                  = "String";
-	This["MultiLine"]             = Enums.Boolean;
-	This["ExtendedEdit"]          = Enums.Boolean;
+	This["MultiLine"]             = "Boolean"; //Enums.Boolean;
+	This["ExtendedEdit"]          = "Boolean"; //Enums.Boolean;
 	//This["MinValue"]              = ;
 	//This["MaxValue"]              = ;
-	This["MarkNegatives"]         = Enums.Boolean;
+	This["MarkNegatives"]         = "Boolean"; //Enums.Boolean;
 	This["ChoiceForm"]            = "MDObjectRef";
-	This["CreateOnInput"]         = Enums.CreateOnInput;
-	This["ChoiceHistoryOnInput"]  = Enums.ChoiceHistoryOnInput;
+	This["CreateOnInput"]         = "String"; //Enums.CreateOnInput;
+	This["ChoiceHistoryOnInput"]  = "String"; //Enums.ChoiceHistoryOnInput;
 	Return This;
 EndFunction // StandardAttribute()
 
@@ -320,7 +326,7 @@ Function StandardTabularSection()
 	This["Synonym"]             = "LocalStringType";
 	This["Comment"]             = "String";
 	This["ToolTip"]             = "LocalStringType";
-	This["FillChecking"]        = Enums.FillChecking;
+	This["FillChecking"]        = "String"; //Enums.FillChecking;
 	This["StandardAttributes"]  = "StandardAttributes";
 	Return This;
 EndFunction // StandardTabularSection()
@@ -374,29 +380,29 @@ Function NumberQualifiers()
 	This = Record();
 	This["Digits"] = "Decimal";
 	This["FractionDigits"] = "Decimal";
-	This["AllowedSign"] = Enums.AllowedSign;
+	This["AllowedSign"] = "String"; //Enums.AllowedSign;
 	Return This;
-EndFunction // NumberQualifiers() 
+EndFunction // NumberQualifiers()
 
 Function StringQualifiers()
 	This = Record();
 	This["Length"] = "Decimal";
-	This["AllowedLength"] = Enums.AllowedLength;
+	This["AllowedLength"] = "String"; //Enums.AllowedLength;
 	Return This;
-EndFunction // StringQualifiers() 
+EndFunction // StringQualifiers()
 
 Function DateQualifiers()
 	This = Record();
-	This["DateFractions"] = Enums.DateFractions;
+	This["DateFractions"] = "String"; //Enums.DateFractions;
 	Return This;
-EndFunction // DateQualifiers() 
+EndFunction // DateQualifiers()
 
 Function BinaryDataQualifiers()
 	This = Record();
 	This["Length"] = "Decimal";
-	This["AllowedLength"] = Enums.AllowedLength;
+	This["AllowedLength"] = "String"; //Enums.AllowedLength;
 	Return This;
-EndFunction // BinaryDataQualifiers() 
+EndFunction // BinaryDataQualifiers()
 
 #EndRegion // Common
 
@@ -474,32 +480,32 @@ Function AttributeProperties()
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
 	This["Type"]                   = "TypeDescription";
-	This["PasswordMode"]           = Enums.Boolean;
+	This["PasswordMode"]           = "Boolean"; //Enums.Boolean;
 	This["Format"]                 = "LocalStringType";
 	This["EditFormat"]             = "LocalStringType";
 	This["ToolTip"]                = "LocalStringType";
-	This["MarkNegatives"]          = Enums.Boolean;
+	This["MarkNegatives"]          = "Boolean"; //Enums.Boolean;
 	This["Mask"]                   = "String";
-	This["MultiLine"]              = Enums.Boolean;
-	This["ExtendedEdit"]           = Enums.Boolean;
+	This["MultiLine"]              = "Boolean"; //Enums.Boolean;
+	This["ExtendedEdit"]           = "Boolean"; //Enums.Boolean;
 	//This["MinValue"]               = ;
 	//This["MaxValue"]               = ;
-	This["FillFromFillingValue"]   = Enums.Boolean;
+	This["FillFromFillingValue"]   = "Boolean"; //Enums.Boolean;
 	//This["FillValue"]              = ;
-	This["FillChecking"]           = Enums.FillChecking;
-	This["ChoiceFoldersAndItems"]  = Enums.FoldersAndItemsUse;
+	This["FillChecking"]           = "String"; //Enums.FillChecking;
+	This["ChoiceFoldersAndItems"]  = "String"; //Enums.FoldersAndItemsUse;
 	This["ChoiceParameterLinks"]   = "ChoiceParameterLinks";
 	//This["ChoiceParameters"]       = ;
-	This["QuickChoice"]            = Enums.UseQuickChoice;
-	This["CreateOnInput"]          = Enums.CreateOnInput;
+	This["QuickChoice"]            = "String"; //Enums.UseQuickChoice;
+	This["CreateOnInput"]          = "String"; //Enums.CreateOnInput;
 	This["ChoiceForm"]             = "MDObjectRef";
 	This["LinkByType"]             = "TypeLink";
-	This["ChoiceHistoryOnInput"]   = Enums.ChoiceHistoryOnInput;
-	This["Indexing"]               = Enums.Indexing;
-	This["FullTextSearch"]         = Enums.FullTextSearchUsing;
-	This["Use"]                    = Enums.AttributeUse;
+	This["ChoiceHistoryOnInput"]   = "String"; //Enums.ChoiceHistoryOnInput;
+	This["Indexing"]               = "String"; //Enums.Indexing;
+	This["FullTextSearch"]         = "String"; //Enums.FullTextSearchUsing;
+	This["Use"]                    = "String"; //Enums.AttributeUse;
 	This["ScheduleLink"]           = "MDObjectRef";
-	This["DataHistory"]            = Enums.DataHistoryUse;
+	This["DataHistory"]            = "String"; //Enums.DataHistoryUse;
 	Return This;
 EndFunction // AttributeProperties()
 
@@ -519,42 +525,42 @@ Function DimensionProperties()
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
 	This["Type"]                   = "TypeDescription";
-	This["PasswordMode"]           = Enums.Boolean;
+	This["PasswordMode"]           = "Boolean"; //Enums.Boolean;
 	This["Format"]                 = "LocalStringType";
 	This["EditFormat"]             = "LocalStringType";
 	This["ToolTip"]                = "LocalStringType";
-	This["MarkNegatives"]          = Enums.Boolean;
+	This["MarkNegatives"]          = "Boolean"; //Enums.Boolean;
 	This["Mask"]                   = "String";
-	This["MultiLine"]              = Enums.Boolean;
-	This["ExtendedEdit"]           = Enums.Boolean;
+	This["MultiLine"]              = "Boolean"; //Enums.Boolean;
+	This["ExtendedEdit"]           = "Boolean"; //Enums.Boolean;
 	//This["MinValue"]               = ;
 	//This["MaxValue"]               = ;
-	This["FillChecking"]           = Enums.FillChecking;
-	This["ChoiceFoldersAndItems"]  = Enums.FoldersAndItemsUse;
+	This["FillChecking"]           = "String"; //Enums.FillChecking;
+	This["ChoiceFoldersAndItems"]  = "String"; //Enums.FoldersAndItemsUse;
 	This["ChoiceParameterLinks"]   = "ChoiceParameterLinks";
 	//This["ChoiceParameters"]       = ;
-	This["QuickChoice"]            = Enums.UseQuickChoice;
-	This["CreateOnInput"]          = Enums.CreateOnInput;
+	This["QuickChoice"]            = "String"; //Enums.UseQuickChoice;
+	This["CreateOnInput"]          = "String"; //Enums.CreateOnInput;
 	This["ChoiceForm"]             = "MDObjectRef";
 	This["LinkByType"]             = "TypeLink";
-	This["ChoiceHistoryOnInput"]   = Enums.ChoiceHistoryOnInput;
-	This["Balance"]                = Enums.Boolean;
+	This["ChoiceHistoryOnInput"]   = "String"; //Enums.ChoiceHistoryOnInput;
+	This["Balance"]                = "Boolean"; //Enums.Boolean;
 	This["AccountingFlag"]         = "MDObjectRef";
-	This["DenyIncompleteValues"]   = Enums.Boolean;
-	This["Indexing"]               = Enums.Indexing;
-	This["FullTextSearch"]         = Enums.FullTextSearchUsing;
-	This["UseInTotals"]            = Enums.Boolean;
+	This["DenyIncompleteValues"]   = "Boolean"; //Enums.Boolean;
+	This["Indexing"]               = "String"; //Enums.Indexing;
+	This["FullTextSearch"]         = "String"; //Enums.FullTextSearchUsing;
+	This["UseInTotals"]            = "Boolean"; //Enums.Boolean;
 	This["RegisterDimension"]      = "MDObjectRef";
 	This["LeadingRegisterData"]    = "MDListType";
-	This["FillFromFillingValue"]   = Enums.Boolean;
+	This["FillFromFillingValue"]   = "Boolean"; //Enums.Boolean;
 	//This["FillValue"]              = ;
-	This["Master"]                 = Enums.Boolean;
-	This["MainFilter"]             = Enums.Boolean;
-	This["BaseDimension"]          = Enums.Boolean;
+	This["Master"]                 = "Boolean"; //Enums.Boolean;
+	This["MainFilter"]             = "Boolean"; //Enums.Boolean;
+	This["BaseDimension"]          = "Boolean"; //Enums.Boolean;
 	This["ScheduleLink"]           = "MDObjectRef";
 	This["DocumentMap"]            = "MDListType";
 	This["RegisterRecordsMap"]     = "MDListType";
-	This["DataHistory"]            = Enums.DataHistoryUse;
+	This["DataHistory"]            = "String"; //Enums.DataHistoryUse;
 	Return This;
 EndFunction // DimensionProperties()
 
@@ -574,34 +580,34 @@ Function ResourceProperties()
 	This["Synonym"]                     = "LocalStringType";
 	This["Comment"]                     = "String";
 	This["Type"]                        = "TypeDescription";
-	This["PasswordMode"]                = Enums.Boolean;
+	This["PasswordMode"]                = "Boolean"; //Enums.Boolean;
 	This["Format"]                      = "LocalStringType";
 	This["EditFormat"]                  = "LocalStringType";
 	This["ToolTip"]                     = "LocalStringType";
-	This["MarkNegatives"]               = Enums.Boolean;
+	This["MarkNegatives"]               = "Boolean"; //Enums.Boolean;
 	This["Mask"]                        = "String";
-	This["MultiLine"]                   = Enums.Boolean;
-	This["ExtendedEdit"]                = Enums.Boolean;
+	This["MultiLine"]                   = "Boolean"; //Enums.Boolean;
+	This["ExtendedEdit"]                = "Boolean"; //Enums.Boolean;
 	//This["MinValue"]                    = ;
 	//This["MaxValue"]                    = ;
-	This["FillChecking"]                = Enums.FillChecking;
-	This["ChoiceFoldersAndItems"]       = Enums.FoldersAndItemsUse;
+	This["FillChecking"]                = "String"; //Enums.FillChecking;
+	This["ChoiceFoldersAndItems"]       = "String"; //Enums.FoldersAndItemsUse;
 	This["ChoiceParameterLinks"]        = "ChoiceParameterLinks";
 	//This["ChoiceParameters"]            = ;
-	This["QuickChoice"]                 = Enums.UseQuickChoice;
-	This["CreateOnInput"]               = Enums.CreateOnInput;
+	This["QuickChoice"]                 = "String"; //Enums.UseQuickChoice;
+	This["CreateOnInput"]               = "String"; //Enums.CreateOnInput;
 	This["ChoiceForm"]                  = "MDObjectRef";
 	This["LinkByType"]                  = "TypeLink";
-	This["ChoiceHistoryOnInput"]        = Enums.ChoiceHistoryOnInput;
-	This["FullTextSearch"]              = Enums.FullTextSearchUsing;
-	This["Balance"]                     = Enums.Boolean;
+	This["ChoiceHistoryOnInput"]        = "String"; //Enums.ChoiceHistoryOnInput;
+	This["FullTextSearch"]              = "String"; //Enums.FullTextSearchUsing;
+	This["Balance"]                     = "Boolean"; //Enums.Boolean;
 	This["AccountingFlag"]              = "MDObjectRef";
 	This["ExtDimensionAccountingFlag"]  = "MDObjectRef";
 	This["NameInDataSource"]            = "String";
-	This["FillFromFillingValue"]        = Enums.Boolean;
+	This["FillFromFillingValue"]        = "Boolean"; //Enums.Boolean;
 	//This["FillValue"]                   = ;
-	This["Indexing"]                    = Enums.Indexing;
-	This["DataHistory"]                 = Enums.DataHistoryUse;
+	This["Indexing"]                    = "String"; //Enums.Indexing;
+	This["DataHistory"]                 = "String"; //Enums.DataHistoryUse;
 	Return This;
 EndFunction // ResourceProperties()
 
@@ -621,27 +627,27 @@ Function AccountingFlagProperties()
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
 	This["Type"]                   = "TypeDescription";
-	This["PasswordMode"]           = Enums.Boolean;
+	This["PasswordMode"]           = "Boolean"; //Enums.Boolean;
 	This["Format"]                 = "LocalStringType";
 	This["EditFormat"]             = "LocalStringType";
 	This["ToolTip"]                = "LocalStringType";
-	This["MarkNegatives"]          = Enums.Boolean;
+	This["MarkNegatives"]          = "Boolean"; //Enums.Boolean;
 	This["Mask"]                   = "String";
-	This["MultiLine"]              = Enums.Boolean;
-	This["ExtendedEdit"]           = Enums.Boolean;
+	This["MultiLine"]              = "Boolean"; //Enums.Boolean;
+	This["ExtendedEdit"]           = "Boolean"; //Enums.Boolean;
 	//This["MinValue"]               = ;
 	//This["MaxValue"]               = ;
-	This["FillFromFillingValue"]   = Enums.Boolean;
+	This["FillFromFillingValue"]   = "Boolean"; //Enums.Boolean;
 	//This["FillValue"]              = ;
-	This["FillChecking"]           = Enums.FillChecking;
-	This["ChoiceFoldersAndItems"]  = Enums.FoldersAndItemsUse;
+	This["FillChecking"]           = "String"; //Enums.FillChecking;
+	This["ChoiceFoldersAndItems"]  = "String"; //Enums.FoldersAndItemsUse;
 	This["ChoiceParameterLinks"]   = "ChoiceParameterLinks";
 	//This["ChoiceParameters"]       = ;
-	This["QuickChoice"]            = Enums.UseQuickChoice;
-	This["CreateOnInput"]          = Enums.CreateOnInput;
+	This["QuickChoice"]            = "String"; //Enums.UseQuickChoice;
+	This["CreateOnInput"]          = "String"; //Enums.CreateOnInput;
 	This["ChoiceForm"]             = "MDObjectRef";
 	This["LinkByType"]             = "TypeLink";
-	This["ChoiceHistoryOnInput"]   = Enums.ChoiceHistoryOnInput;
+	This["ChoiceHistoryOnInput"]   = "String"; //Enums.ChoiceHistoryOnInput;
 	Return This;
 EndFunction // AccountingFlagProperties()
 
@@ -661,27 +667,27 @@ Function ExtDimensionAccountingFlagProperties()
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
 	This["Type"]                   = "TypeDescription";
-	This["PasswordMode"]           = Enums.Boolean;
+	This["PasswordMode"]           = "Boolean"; //Enums.Boolean;
 	This["Format"]                 = "LocalStringType";
 	This["EditFormat"]             = "LocalStringType";
 	This["ToolTip"]                = "LocalStringType";
-	This["MarkNegatives"]          = Enums.Boolean;
+	This["MarkNegatives"]          = "Boolean"; //Enums.Boolean;
 	This["Mask"]                   = "String";
-	This["MultiLine"]              = Enums.Boolean;
-	This["ExtendedEdit"]           = Enums.Boolean;
+	This["MultiLine"]              = "Boolean"; //Enums.Boolean;
+	This["ExtendedEdit"]           = "Boolean"; //Enums.Boolean;
 	//This["MinValue"]               = ;
 	//This["MaxValue"]               = ;
-	This["FillFromFillingValue"]   = Enums.Boolean;
+	This["FillFromFillingValue"]   = "Boolean"; //Enums.Boolean;
 	//This["FillValue"]              = ;
-	This["FillChecking"]           = Enums.FillChecking;
-	This["ChoiceFoldersAndItems"]  = Enums.FoldersAndItemsUse;
+	This["FillChecking"]           = "String"; //Enums.FillChecking;
+	This["ChoiceFoldersAndItems"]  = "String"; //Enums.FoldersAndItemsUse;
 	This["ChoiceParameterLinks"]   = "ChoiceParameterLinks";
 	//This["ChoiceParameters"]       = ;
-	This["QuickChoice"]            = Enums.UseQuickChoice;
-	This["CreateOnInput"]          = Enums.CreateOnInput;
+	This["QuickChoice"]            = "String"; //Enums.UseQuickChoice;
+	This["CreateOnInput"]          = "String"; //Enums.CreateOnInput;
 	This["ChoiceForm"]             = "MDObjectRef";
 	This["LinkByType"]             = "TypeLink";
-	This["ChoiceHistoryOnInput"]   = Enums.ChoiceHistoryOnInput;
+	This["ChoiceHistoryOnInput"]   = "String"; //Enums.ChoiceHistoryOnInput;
 	Return This;
 EndFunction // ExtDimensionAccountingFlagProperties()
 
@@ -700,7 +706,7 @@ Function ColumnProperties()
 	This["Name"]                   = "String";
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
-	This["Indexing"]               = Enums.Indexing;
+	This["Indexing"]               = "String"; //Enums.Indexing;
 	This["References"]             = "MDListType";
 	Return This;
 EndFunction // ColumnProperties()
@@ -738,8 +744,8 @@ Function FormProperties()
 	This["Name"]                   = "String";
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
-	This["FormType"]               = Enums.FormType;
-	This["IncludeHelpInContents"]  = Enums.Boolean;
+	This["FormType"]               = "String"; //Enums.FormType;
+	This["IncludeHelpInContents"]  = "Boolean"; //Enums.Boolean;
 	//This["UsePurposes"]            = "FixedArray";
 	This["ExtendedPresentation"]   = "LocalStringType";
 	Return This;
@@ -760,7 +766,7 @@ Function TemplateProperties()
 	This["Name"]                   = "String";
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
-	This["TemplateType"]           = Enums.TemplateType;
+	This["TemplateType"]           = "String"; //Enums.TemplateType;
 	Return This;
 EndFunction // TemplateProperties()
 
@@ -780,30 +786,30 @@ Function AddressingAttributeProperties()
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
 	This["Type"]                   = "TypeDescription";
-	This["PasswordMode"]           = Enums.Boolean;
+	This["PasswordMode"]           = "Boolean"; //Enums.Boolean;
 	This["Format"]                 = "LocalStringType";
 	This["EditFormat"]             = "LocalStringType";
 	This["ToolTip"]                = "LocalStringType";
-	This["MarkNegatives"]          = Enums.Boolean;
+	This["MarkNegatives"]          = "Boolean"; //Enums.Boolean;
 	This["Mask"]                   = "String";
-	This["MultiLine"]              = Enums.Boolean;
-	This["ExtendedEdit"]           = Enums.Boolean;
+	This["MultiLine"]              = "Boolean"; //Enums.Boolean;
+	This["ExtendedEdit"]           = "Boolean"; //Enums.Boolean;
 	//This["MinValue"]               = ;
 	//This["MaxValue"]               = ;
-	This["FillFromFillingValue"]   = Enums.Boolean;
+	This["FillFromFillingValue"]   = "Boolean"; //Enums.Boolean;
 	//This["FillValue"]              = ;
-	This["FillChecking"]           = Enums.FillChecking;
-	This["ChoiceFoldersAndItems"]  = Enums.FoldersAndItemsUse;
+	This["FillChecking"]           = "String"; //Enums.FillChecking;
+	This["ChoiceFoldersAndItems"]  = "String"; //Enums.FoldersAndItemsUse;
 	This["ChoiceParameterLinks"]   = "ChoiceParameterLinks";
 	//This["ChoiceParameters"]       = ;
-	This["QuickChoice"]            = Enums.UseQuickChoice;
-	This["CreateOnInput"]          = Enums.CreateOnInput;
+	This["QuickChoice"]            = "String"; //Enums.UseQuickChoice;
+	This["CreateOnInput"]          = "String"; //Enums.CreateOnInput;
 	This["ChoiceForm"]             = "MDObjectRef";
 	This["LinkByType"]             = "TypeLink";
-	This["ChoiceHistoryOnInput"]   = Enums.ChoiceHistoryOnInput;
-	This["Indexing"]               = Enums.Indexing;
+	This["ChoiceHistoryOnInput"]   = "String"; //Enums.ChoiceHistoryOnInput;
+	This["Indexing"]               = "String"; //Enums.Indexing;
 	This["AddressingDimension"]    = "MDObjectRef";
-	This["FullTextSearch"]         = Enums.FullTextSearchUsing;
+	This["FullTextSearch"]         = "String"; //Enums.FullTextSearchUsing;
 	Return This;
 EndFunction // AddressingAttributeProperties()
 
@@ -824,9 +830,9 @@ Function TabularSectionProperties()
 	This["Synonym"]             = "LocalStringType";
 	This["Comment"]             = "String";
 	This["ToolTip"]             = "LocalStringType";
-	This["FillChecking"]        = Enums.FillChecking;
+	This["FillChecking"]        = "String"; //Enums.FillChecking;
 	This["StandardAttributes"]  = "StandardAttributes";
-	This["Use"]                 = Enums.AttributeUse;
+	This["Use"]                 = "String"; //Enums.AttributeUse;
 	Return This;
 EndFunction // TabularSectionProperties()
 
@@ -854,9 +860,9 @@ Function CommandProperties()
 	This["Comment"]               = "String";
 	This["Group"]                 = "IncludeInCommandCategoriesType";
 	This["CommandParameterType"]  = "TypeDescription";
-	This["ParameterUseMode"]      = Enums.CommandParameterUseMode;
-	This["ModifiesData"]          = Enums.Boolean;
-	This["Representation"]        = Enums.ButtonRepresentation;
+	This["ParameterUseMode"]      = "String"; //Enums.CommandParameterUseMode;
+	This["ModifiesData"]          = "Boolean"; //Enums.Boolean;
+	This["Representation"]        = "String"; //Enums.ButtonRepresentation;
 	This["ToolTip"]               = "LocalStringType";
 	//This["Picture"]               = ;
 	//This["Shortcut"]              = ;
@@ -882,17 +888,17 @@ Function ConfigurationProperties()
 	This["Synonym"]                                          = "LocalStringType";
 	This["Comment"]                                          = "String";
 	This["NamePrefix"]                                       = "String";
-	This["ConfigurationExtensionCompatibilityMode"]          = Enums.CompatibilityMode;
-	This["DefaultRunMode"]                                   = Enums.ClientRunMode;
+	This["ConfigurationExtensionCompatibilityMode"]          = "String"; //Enums.CompatibilityMode;
+	This["DefaultRunMode"]                                   = "String"; //Enums.ClientRunMode;
 	//This["UsePurposes"]                                      = "FixedArray";
-	This["ScriptVariant"]                                    = Enums.ScriptVariant;
+	This["ScriptVariant"]                                    = "String"; //Enums.ScriptVariant;
 	This["DefaultRoles"]                                     = "MDListType";
 	This["Vendor"]                                           = "String";
 	This["Version"]                                          = "String";
 	This["UpdateCatalogAddress"]                             = "String";
-	This["IncludeHelpInContents"]                            = Enums.Boolean;
-	This["UseManagedFormInOrdinaryApplication"]              = Enums.Boolean;
-	This["UseOrdinaryFormInManagedApplication"]              = Enums.Boolean;
+	This["IncludeHelpInContents"]                            = "Boolean"; //Enums.Boolean;
+	This["UseManagedFormInOrdinaryApplication"]              = "Boolean"; //Enums.Boolean;
+	This["UseOrdinaryFormInManagedApplication"]              = "Boolean"; //Enums.Boolean;
 	This["AdditionalFullTextSearchDictionaries"]             = "MDListType";
 	This["CommonSettingsStorage"]                            = "MDObjectRef";
 	This["ReportsUserSettingsStorage"]                       = "MDObjectRef";
@@ -906,7 +912,7 @@ Function ConfigurationProperties()
 	This["DefaultDynamicListSettingsForm"]                   = "MDObjectRef";
 	This["DefaultSearchForm"]                                = "MDObjectRef";
 	//This["RequiredMobileApplicationPermissions"]             = "FixedMap";
-	This["MainClientApplicationWindowMode"]                  = Enums.MainClientApplicationWindowMode;
+	This["MainClientApplicationWindowMode"]                  = "String"; //Enums.MainClientApplicationWindowMode;
 	This["DefaultInterface"]                                 = "MDObjectRef";
 	This["DefaultStyle"]                                     = "MDObjectRef";
 	This["DefaultLanguage"]                                  = "MDObjectRef";
@@ -915,12 +921,12 @@ Function ConfigurationProperties()
 	This["Copyright"]                                        = "LocalStringType";
 	This["VendorInformationAddress"]                         = "LocalStringType";
 	This["ConfigurationInformationAddress"]                  = "LocalStringType";
-	This["DataLockControlMode"]                              = Enums.DefaultDataLockControlMode;
-	This["ObjectAutonumerationMode"]                         = Enums.ObjectAutonumerationMode;
-	This["ModalityUseMode"]                                  = Enums.ModalityUseMode;
-	This["SynchronousPlatformExtensionAndAddInCallUseMode"]  = Enums.SynchronousPlatformExtensionAndAddInCallUseMode;
-	This["InterfaceCompatibilityMode"]                       = Enums.InterfaceCompatibilityMode;
-	This["CompatibilityMode"]                                = Enums.CompatibilityMode;
+	This["DataLockControlMode"]                              = "String"; //Enums.DefaultDataLockControlMode;
+	This["ObjectAutonumerationMode"]                         = "String"; //Enums.ObjectAutonumerationMode;
+	This["ModalityUseMode"]                                  = "String"; //Enums.ModalityUseMode;
+	This["SynchronousPlatformExtensionAndAddInCallUseMode"]  = "String"; //Enums.SynchronousPlatformExtensionAndAddInCallUseMode;
+	This["InterfaceCompatibilityMode"]                       = "String"; //Enums.InterfaceCompatibilityMode;
+	This["CompatibilityMode"]                                = "String"; //Enums.CompatibilityMode;
 	This["DefaultConstantsForm"]                             = "MDObjectRef";
 	Return This;
 EndFunction // ConfigurationProperties()
@@ -1011,17 +1017,17 @@ Function AccountingRegisterProperties()
 	This["Name"]                      = "String";
 	This["Synonym"]                   = "LocalStringType";
 	This["Comment"]                   = "String";
-	This["UseStandardCommands"]       = Enums.Boolean;
-	This["IncludeHelpInContents"]     = Enums.Boolean;
+	This["UseStandardCommands"]       = "Boolean"; //Enums.Boolean;
+	This["IncludeHelpInContents"]     = "Boolean"; //Enums.Boolean;
 	This["ChartOfAccounts"]           = "MDObjectRef";
-	This["Correspondence"]            = Enums.Boolean;
+	This["Correspondence"]            = "Boolean"; //Enums.Boolean;
 	This["PeriodAdjustmentLength"]    = "Decimal";
 	This["DefaultListForm"]           = "MDObjectRef";
 	This["AuxiliaryListForm"]         = "MDObjectRef";
 	This["StandardAttributes"]        = "StandardAttributes";
-	This["DataLockControlMode"]       = Enums.DefaultDataLockControlMode;
-	This["EnableTotalsSplitting"]     = Enums.Boolean;
-	This["FullTextSearch"]            = Enums.FullTextSearchUsing;
+	This["DataLockControlMode"]       = "String"; //Enums.DefaultDataLockControlMode;
+	This["EnableTotalsSplitting"]     = "Boolean"; //Enums.Boolean;
+	This["FullTextSearch"]            = "String"; //Enums.FullTextSearchUsing;
 	This["ListPresentation"]          = "LocalStringType";
 	This["ExtendedListPresentation"]  = "LocalStringType";
 	This["Explanation"]               = "LocalStringType";
@@ -1056,15 +1062,15 @@ Function AccumulationRegisterProperties()
 	This["Name"]                      = "String";
 	This["Synonym"]                   = "LocalStringType";
 	This["Comment"]                   = "String";
-	This["UseStandardCommands"]       = Enums.Boolean;
+	This["UseStandardCommands"]       = "Boolean"; //Enums.Boolean;
 	This["DefaultListForm"]           = "MDObjectRef";
 	This["AuxiliaryListForm"]         = "MDObjectRef";
-	This["RegisterType"]              = Enums.AccumulationRegisterType;
-	This["IncludeHelpInContents"]     = Enums.Boolean;
+	This["RegisterType"]              = "String"; //Enums.AccumulationRegisterType;
+	This["IncludeHelpInContents"]     = "Boolean"; //Enums.Boolean;
 	This["StandardAttributes"]        = "StandardAttributes";
-	This["DataLockControlMode"]       = Enums.DefaultDataLockControlMode;
-	This["FullTextSearch"]            = Enums.FullTextSearchUsing;
-	This["EnableTotalsSplitting"]     = Enums.Boolean;
+	This["DataLockControlMode"]       = "String"; //Enums.DefaultDataLockControlMode;
+	This["FullTextSearch"]            = "String"; //Enums.FullTextSearchUsing;
+	This["EnableTotalsSplitting"]     = "Boolean"; //Enums.Boolean;
 	This["ListPresentation"]          = "LocalStringType";
 	This["ExtendedListPresentation"]  = "LocalStringType";
 	This["Explanation"]               = "LocalStringType";
@@ -1099,35 +1105,35 @@ Function BusinessProcessProperties()
 	This["Name"]                              = "String";
 	This["Synonym"]                           = "LocalStringType";
 	This["Comment"]                           = "String";
-	This["UseStandardCommands"]               = Enums.Boolean;
-	This["EditType"]                          = Enums.EditType;
+	This["UseStandardCommands"]               = "Boolean"; //Enums.Boolean;
+	This["EditType"]                          = "String"; //Enums.EditType;
 	This["InputByString"]                     = "FieldList";
-	This["CreateOnInput"]                     = Enums.CreateOnInput;
-	This["SearchStringModeOnInputByString"]   = Enums.SearchStringModeOnInputByString;
-	This["ChoiceDataGetModeOnInputByString"]  = Enums.ChoiceDataGetModeOnInputByString;
-	This["FullTextSearchOnInputByString"]     = Enums.FullTextSearchOnInputByString;
+	This["CreateOnInput"]                     = "String"; //Enums.CreateOnInput;
+	This["SearchStringModeOnInputByString"]   = "String"; //Enums.SearchStringModeOnInputByString;
+	This["ChoiceDataGetModeOnInputByString"]  = "String"; //Enums.ChoiceDataGetModeOnInputByString;
+	This["FullTextSearchOnInputByString"]     = "String"; //Enums.FullTextSearchOnInputByString;
 	This["DefaultObjectForm"]                 = "MDObjectRef";
 	This["DefaultListForm"]                   = "MDObjectRef";
 	This["DefaultChoiceForm"]                 = "MDObjectRef";
 	This["AuxiliaryObjectForm"]               = "MDObjectRef";
 	This["AuxiliaryListForm"]                 = "MDObjectRef";
 	This["AuxiliaryChoiceForm"]               = "MDObjectRef";
-	This["ChoiceHistoryOnInput"]              = Enums.ChoiceHistoryOnInput;
-	This["NumberType"]                        = Enums.BusinessProcessNumberType;
+	This["ChoiceHistoryOnInput"]              = "String"; //Enums.ChoiceHistoryOnInput;
+	This["NumberType"]                        = "String"; //Enums.BusinessProcessNumberType;
 	This["NumberLength"]                      = "Decimal";
-	This["NumberAllowedLength"]               = Enums.AllowedLength;
-	This["CheckUnique"]                       = Enums.Boolean;
+	This["NumberAllowedLength"]               = "String"; //Enums.AllowedLength;
+	This["CheckUnique"]                       = "Boolean"; //Enums.Boolean;
 	This["StandardAttributes"]                = "StandardAttributes";
 	This["Characteristics"]                   = "Characteristics";
-	This["Autonumbering"]                     = Enums.Boolean;
+	This["Autonumbering"]                     = "Boolean"; //Enums.Boolean;
 	This["BasedOn"]                           = "MDListType";
-	This["NumberPeriodicity"]                 = Enums.BusinessProcessNumberPeriodicity;
+	This["NumberPeriodicity"]                 = "String"; //Enums.BusinessProcessNumberPeriodicity;
 	This["Task"]                              = "MDObjectRef";
-	This["CreateTaskInPrivilegedMode"]        = Enums.Boolean;
+	This["CreateTaskInPrivilegedMode"]        = "Boolean"; //Enums.Boolean;
 	This["DataLockFields"]                    = "FieldList";
-	This["DataLockControlMode"]               = Enums.DefaultDataLockControlMode;
-	This["IncludeHelpInContents"]             = Enums.Boolean;
-	This["FullTextSearch"]                    = Enums.FullTextSearchUsing;
+	This["DataLockControlMode"]               = "String"; //Enums.DefaultDataLockControlMode;
+	This["IncludeHelpInContents"]             = "Boolean"; //Enums.Boolean;
+	This["FullTextSearch"]                    = "String"; //Enums.FullTextSearchUsing;
 	This["ObjectPresentation"]                = "LocalStringType";
 	This["ExtendedObjectPresentation"]        = "LocalStringType";
 	This["ListPresentation"]                  = "LocalStringType";
@@ -1163,20 +1169,20 @@ Function CalculationRegisterProperties()
 	This["Name"]                      = "String";
 	This["Synonym"]                   = "LocalStringType";
 	This["Comment"]                   = "String";
-	This["UseStandardCommands"]       = Enums.Boolean;
+	This["UseStandardCommands"]       = "Boolean"; //Enums.Boolean;
 	This["DefaultListForm"]           = "MDObjectRef";
 	This["AuxiliaryListForm"]         = "MDObjectRef";
-	This["Periodicity"]               = Enums.CalculationRegisterPeriodicity;
-	This["ActionPeriod"]              = Enums.Boolean;
-	This["BasePeriod"]                = Enums.Boolean;
+	This["Periodicity"]               = "String"; //Enums.CalculationRegisterPeriodicity;
+	This["ActionPeriod"]              = "Boolean"; //Enums.Boolean;
+	This["BasePeriod"]                = "Boolean"; //Enums.Boolean;
 	This["Schedule"]                  = "MDObjectRef";
 	This["ScheduleValue"]             = "MDObjectRef";
 	This["ScheduleDate"]              = "MDObjectRef";
 	This["ChartOfCalculationTypes"]   = "MDObjectRef";
-	This["IncludeHelpInContents"]     = Enums.Boolean;
+	This["IncludeHelpInContents"]     = "Boolean"; //Enums.Boolean;
 	This["StandardAttributes"]        = "StandardAttributes";
-	This["DataLockControlMode"]       = Enums.DefaultDataLockControlMode;
-	This["FullTextSearch"]            = Enums.FullTextSearchUsing;
+	This["DataLockControlMode"]       = "String"; //Enums.DefaultDataLockControlMode;
+	This["FullTextSearch"]            = "String"; //Enums.FullTextSearchUsing;
 	This["ListPresentation"]          = "LocalStringType";
 	This["ExtendedListPresentation"]  = "LocalStringType";
 	This["Explanation"]               = "LocalStringType";
@@ -1212,32 +1218,32 @@ Function CatalogProperties()
 	This["Name"]                              = "String";
 	This["Synonym"]                           = "LocalStringType";
 	This["Comment"]                           = "String";
-	This["Hierarchical"]                      = Enums.Boolean;
-	This["HierarchyType"]                     = Enums.HierarchyType;
-	This["LimitLevelCount"]                   = Enums.Boolean;
+	This["Hierarchical"]                      = "Boolean"; //Enums.Boolean;
+	This["HierarchyType"]                     = "String"; //Enums.HierarchyType;
+	This["LimitLevelCount"]                   = "Boolean"; //Enums.Boolean;
 	This["LevelCount"]                        = "Decimal";
-	This["FoldersOnTop"]                      = Enums.Boolean;
-	This["UseStandardCommands"]               = Enums.Boolean;
+	This["FoldersOnTop"]                      = "Boolean"; //Enums.Boolean;
+	This["UseStandardCommands"]               = "Boolean"; //Enums.Boolean;
 	This["Owners"]                            = "MDListType";
-	This["SubordinationUse"]                  = Enums.SubordinationUse;
+	This["SubordinationUse"]                  = "String"; //Enums.SubordinationUse;
 	This["CodeLength"]                        = "Decimal";
 	This["DescriptionLength"]                 = "Decimal";
-	This["CodeType"]                          = Enums.CatalogCodeType;
-	This["CodeAllowedLength"]                 = Enums.AllowedLength;
-	This["CodeSeries"]                        = Enums.CatalogCodesSeries;
-	This["CheckUnique"]                       = Enums.Boolean;
-	This["Autonumbering"]                     = Enums.Boolean;
-	This["DefaultPresentation"]               = Enums.CatalogMainPresentation;
+	This["CodeType"]                          = "String"; //Enums.CatalogCodeType;
+	This["CodeAllowedLength"]                 = "String"; //Enums.AllowedLength;
+	This["CodeSeries"]                        = "String"; //Enums.CatalogCodesSeries;
+	This["CheckUnique"]                       = "Boolean"; //Enums.Boolean;
+	This["Autonumbering"]                     = "Boolean"; //Enums.Boolean;
+	This["DefaultPresentation"]               = "String"; //Enums.CatalogMainPresentation;
 	This["StandardAttributes"]                = "StandardAttributes";
 	This["Characteristics"]                   = "Characteristics";
-	This["PredefinedDataUpdate"]              = Enums.PredefinedDataUpdate;
-	This["EditType"]                          = Enums.EditType;
-	This["QuickChoice"]                       = Enums.Boolean;
-	This["ChoiceMode"]                        = Enums.ChoiceMode;
+	This["PredefinedDataUpdate"]              = "String"; //Enums.PredefinedDataUpdate;
+	This["EditType"]                          = "String"; //Enums.EditType;
+	This["QuickChoice"]                       = "Boolean"; //Enums.Boolean;
+	This["ChoiceMode"]                        = "String"; //Enums.ChoiceMode;
 	This["InputByString"]                     = "FieldList";
-	This["SearchStringModeOnInputByString"]   = Enums.SearchStringModeOnInputByString;
-	This["FullTextSearchOnInputByString"]     = Enums.FullTextSearchOnInputByString;
-	This["ChoiceDataGetModeOnInputByString"]  = Enums.ChoiceDataGetModeOnInputByString;
+	This["SearchStringModeOnInputByString"]   = "String"; //Enums.SearchStringModeOnInputByString;
+	This["FullTextSearchOnInputByString"]     = "String"; //Enums.FullTextSearchOnInputByString;
+	This["ChoiceDataGetModeOnInputByString"]  = "String"; //Enums.ChoiceDataGetModeOnInputByString;
 	This["DefaultObjectForm"]                 = "MDObjectRef";
 	This["DefaultFolderForm"]                 = "MDObjectRef";
 	This["DefaultListForm"]                   = "MDObjectRef";
@@ -1248,19 +1254,19 @@ Function CatalogProperties()
 	This["AuxiliaryListForm"]                 = "MDObjectRef";
 	This["AuxiliaryChoiceForm"]               = "MDObjectRef";
 	This["AuxiliaryFolderChoiceForm"]         = "MDObjectRef";
-	This["IncludeHelpInContents"]             = Enums.Boolean;
+	This["IncludeHelpInContents"]             = "Boolean"; //Enums.Boolean;
 	This["BasedOn"]                           = "MDListType";
 	This["DataLockFields"]                    = "FieldList";
-	This["DataLockControlMode"]               = Enums.DefaultDataLockControlMode;
-	This["FullTextSearch"]                    = Enums.FullTextSearchUsing;
+	This["DataLockControlMode"]               = "String"; //Enums.DefaultDataLockControlMode;
+	This["FullTextSearch"]                    = "String"; //Enums.FullTextSearchUsing;
 	This["ObjectPresentation"]                = "LocalStringType";
 	This["ExtendedObjectPresentation"]        = "LocalStringType";
 	This["ListPresentation"]                  = "LocalStringType";
 	This["ExtendedListPresentation"]          = "LocalStringType";
 	This["Explanation"]                       = "LocalStringType";
-	This["CreateOnInput"]                     = Enums.CreateOnInput;
-	This["ChoiceHistoryOnInput"]              = Enums.ChoiceHistoryOnInput;
-	This["DataHistory"]                       = Enums.DataHistoryUse;
+	This["CreateOnInput"]                     = "String"; //Enums.CreateOnInput;
+	This["ChoiceHistoryOnInput"]              = "String"; //Enums.ChoiceHistoryOnInput;
+	This["DataHistory"]                       = "String"; //Enums.DataHistoryUse;
 	Return This;
 EndFunction // CatalogProperties()
 
@@ -1291,41 +1297,41 @@ Function ChartOfAccountsProperties()
 	This["Name"]                              = "String";
 	This["Synonym"]                           = "LocalStringType";
 	This["Comment"]                           = "String";
-	This["UseStandardCommands"]               = Enums.Boolean;
-	This["IncludeHelpInContents"]             = Enums.Boolean;
+	This["UseStandardCommands"]               = "Boolean"; //Enums.Boolean;
+	This["IncludeHelpInContents"]             = "Boolean"; //Enums.Boolean;
 	This["BasedOn"]                           = "MDListType";
 	This["ExtDimensionTypes"]                 = "MDObjectRef";
 	This["MaxExtDimensionCount"]              = "Decimal";
 	This["CodeMask"]                          = "String";
 	This["CodeLength"]                        = "Decimal";
 	This["DescriptionLength"]                 = "Decimal";
-	This["CodeSeries"]                        = Enums.CharOfAccountCodeSeries;
-	This["CheckUnique"]                       = Enums.Boolean;
-	This["DefaultPresentation"]               = Enums.AccountMainPresentation;
+	This["CodeSeries"]                        = "String"; //Enums.CharOfAccountCodeSeries;
+	This["CheckUnique"]                       = "Boolean"; //Enums.Boolean;
+	This["DefaultPresentation"]               = "String"; //Enums.AccountMainPresentation;
 	This["StandardAttributes"]                = "StandardAttributes";
 	This["Characteristics"]                   = "Characteristics";
 	This["StandardTabularSections"]           = "StandardTabularSections";
-	This["PredefinedDataUpdate"]              = Enums.PredefinedDataUpdate;
-	This["EditType"]                          = Enums.EditType;
-	This["QuickChoice"]                       = Enums.Boolean;
-	This["ChoiceMode"]                        = Enums.ChoiceMode;
+	This["PredefinedDataUpdate"]              = "String"; //Enums.PredefinedDataUpdate;
+	This["EditType"]                          = "String"; //Enums.EditType;
+	This["QuickChoice"]                       = "Boolean"; //Enums.Boolean;
+	This["ChoiceMode"]                        = "String"; //Enums.ChoiceMode;
 	This["InputByString"]                     = "FieldList";
-	This["SearchStringModeOnInputByString"]   = Enums.SearchStringModeOnInputByString;
-	This["FullTextSearchOnInputByString"]     = Enums.FullTextSearchOnInputByString;
-	This["ChoiceDataGetModeOnInputByString"]  = Enums.ChoiceDataGetModeOnInputByString;
-	This["CreateOnInput"]                     = Enums.CreateOnInput;
-	This["ChoiceHistoryOnInput"]              = Enums.ChoiceHistoryOnInput;
+	This["SearchStringModeOnInputByString"]   = "String"; //Enums.SearchStringModeOnInputByString;
+	This["FullTextSearchOnInputByString"]     = "String"; //Enums.FullTextSearchOnInputByString;
+	This["ChoiceDataGetModeOnInputByString"]  = "String"; //Enums.ChoiceDataGetModeOnInputByString;
+	This["CreateOnInput"]                     = "String"; //Enums.CreateOnInput;
+	This["ChoiceHistoryOnInput"]              = "String"; //Enums.ChoiceHistoryOnInput;
 	This["DefaultObjectForm"]                 = "MDObjectRef";
 	This["DefaultListForm"]                   = "MDObjectRef";
 	This["DefaultChoiceForm"]                 = "MDObjectRef";
 	This["AuxiliaryObjectForm"]               = "MDObjectRef";
 	This["AuxiliaryListForm"]                 = "MDObjectRef";
 	This["AuxiliaryChoiceForm"]               = "MDObjectRef";
-	This["AutoOrderByCode"]                   = Enums.Boolean;
+	This["AutoOrderByCode"]                   = "Boolean"; //Enums.Boolean;
 	This["OrderLength"]                       = "Decimal";
 	This["DataLockFields"]                    = "FieldList";
-	This["DataLockControlMode"]               = Enums.DefaultDataLockControlMode;
-	This["FullTextSearch"]                    = Enums.FullTextSearchUsing;
+	This["DataLockControlMode"]               = "String"; //Enums.DefaultDataLockControlMode;
+	This["FullTextSearch"]                    = "String"; //Enums.FullTextSearchUsing;
 	This["ObjectPresentation"]                = "LocalStringType";
 	This["ExtendedObjectPresentation"]        = "LocalStringType";
 	This["ListPresentation"]                  = "LocalStringType";
@@ -1363,21 +1369,21 @@ Function ChartOfCalculationTypesProperties()
 	This["Name"]                              = "String";
 	This["Synonym"]                           = "LocalStringType";
 	This["Comment"]                           = "String";
-	This["UseStandardCommands"]               = Enums.Boolean;
+	This["UseStandardCommands"]               = "Boolean"; //Enums.Boolean;
 	This["CodeLength"]                        = "Decimal";
 	This["DescriptionLength"]                 = "Decimal";
-	This["CodeType"]                          = Enums.ChartOfCalculationTypesCodeType;
-	This["CodeAllowedLength"]                 = Enums.AllowedLength;
-	This["DefaultPresentation"]               = Enums.CalculationTypeMainPresentation;
-	This["EditType"]                          = Enums.EditType;
-	This["QuickChoice"]                       = Enums.Boolean;
-	This["ChoiceMode"]                        = Enums.ChoiceMode;
+	This["CodeType"]                          = "String"; //Enums.ChartOfCalculationTypesCodeType;
+	This["CodeAllowedLength"]                 = "String"; //Enums.AllowedLength;
+	This["DefaultPresentation"]               = "String"; //Enums.CalculationTypeMainPresentation;
+	This["EditType"]                          = "String"; //Enums.EditType;
+	This["QuickChoice"]                       = "Boolean"; //Enums.Boolean;
+	This["ChoiceMode"]                        = "String"; //Enums.ChoiceMode;
 	This["InputByString"]                     = "FieldList";
-	This["SearchStringModeOnInputByString"]   = Enums.SearchStringModeOnInputByString;
-	This["FullTextSearchOnInputByString"]     = Enums.FullTextSearchOnInputByString;
-	This["ChoiceDataGetModeOnInputByString"]  = Enums.ChoiceDataGetModeOnInputByString;
-	This["CreateOnInput"]                     = Enums.CreateOnInput;
-	This["ChoiceHistoryOnInput"]              = Enums.ChoiceHistoryOnInput;
+	This["SearchStringModeOnInputByString"]   = "String"; //Enums.SearchStringModeOnInputByString;
+	This["FullTextSearchOnInputByString"]     = "String"; //Enums.FullTextSearchOnInputByString;
+	This["ChoiceDataGetModeOnInputByString"]  = "String"; //Enums.ChoiceDataGetModeOnInputByString;
+	This["CreateOnInput"]                     = "String"; //Enums.CreateOnInput;
+	This["ChoiceHistoryOnInput"]              = "String"; //Enums.ChoiceHistoryOnInput;
 	This["DefaultObjectForm"]                 = "MDObjectRef";
 	This["DefaultListForm"]                   = "MDObjectRef";
 	This["DefaultChoiceForm"]                 = "MDObjectRef";
@@ -1385,17 +1391,17 @@ Function ChartOfCalculationTypesProperties()
 	This["AuxiliaryListForm"]                 = "MDObjectRef";
 	This["AuxiliaryChoiceForm"]               = "MDObjectRef";
 	This["BasedOn"]                           = "MDListType";
-	This["DependenceOnCalculationTypes"]      = Enums.ChartOfCalculationTypesBaseUse;
+	This["DependenceOnCalculationTypes"]      = "String"; //Enums.ChartOfCalculationTypesBaseUse;
 	This["BaseCalculationTypes"]              = "MDListType";
-	This["ActionPeriodUse"]                   = Enums.Boolean;
+	This["ActionPeriodUse"]                   = "Boolean"; //Enums.Boolean;
 	This["StandardAttributes"]                = "StandardAttributes";
 	This["Characteristics"]                   = "Characteristics";
 	This["StandardTabularSections"]           = "StandardTabularSections";
-	This["PredefinedDataUpdate"]              = Enums.PredefinedDataUpdate;
-	This["IncludeHelpInContents"]             = Enums.Boolean;
+	This["PredefinedDataUpdate"]              = "String"; //Enums.PredefinedDataUpdate;
+	This["IncludeHelpInContents"]             = "Boolean"; //Enums.Boolean;
 	This["DataLockFields"]                    = "FieldList";
-	This["DataLockControlMode"]               = Enums.DefaultDataLockControlMode;
-	This["FullTextSearch"]                    = Enums.FullTextSearchUsing;
+	This["DataLockControlMode"]               = "String"; //Enums.DefaultDataLockControlMode;
+	This["FullTextSearch"]                    = "String"; //Enums.FullTextSearchUsing;
 	This["ObjectPresentation"]                = "LocalStringType";
 	This["ExtendedObjectPresentation"]        = "LocalStringType";
 	This["ListPresentation"]                  = "LocalStringType";
@@ -1431,31 +1437,31 @@ Function ChartOfCharacteristicTypesProperties()
 	This["Name"]                              = "String";
 	This["Synonym"]                           = "LocalStringType";
 	This["Comment"]                           = "String";
-	This["UseStandardCommands"]               = Enums.Boolean;
-	This["IncludeHelpInContents"]             = Enums.Boolean;
+	This["UseStandardCommands"]               = "Boolean"; //Enums.Boolean;
+	This["IncludeHelpInContents"]             = "Boolean"; //Enums.Boolean;
 	This["CharacteristicExtValues"]           = "MDObjectRef";
 	This["Type"]                              = "TypeDescription";
-	This["Hierarchical"]                      = Enums.Boolean;
-	This["FoldersOnTop"]                      = Enums.Boolean;
+	This["Hierarchical"]                      = "Boolean"; //Enums.Boolean;
+	This["FoldersOnTop"]                      = "Boolean"; //Enums.Boolean;
 	This["CodeLength"]                        = "Decimal";
-	This["CodeAllowedLength"]                 = Enums.AllowedLength;
+	This["CodeAllowedLength"]                 = "String"; //Enums.AllowedLength;
 	This["DescriptionLength"]                 = "Decimal";
-	This["CodeSeries"]                        = Enums.CharacteristicKindCodesSeries;
-	This["CheckUnique"]                       = Enums.Boolean;
-	This["Autonumbering"]                     = Enums.Boolean;
-	This["DefaultPresentation"]               = Enums.CharacteristicTypeMainPresentation;
+	This["CodeSeries"]                        = "String"; //Enums.CharacteristicKindCodesSeries;
+	This["CheckUnique"]                       = "Boolean"; //Enums.Boolean;
+	This["Autonumbering"]                     = "Boolean"; //Enums.Boolean;
+	This["DefaultPresentation"]               = "String"; //Enums.CharacteristicTypeMainPresentation;
 	This["StandardAttributes"]                = "StandardAttributes";
 	This["Characteristics"]                   = "Characteristics";
-	This["PredefinedDataUpdate"]              = Enums.PredefinedDataUpdate;
-	This["EditType"]                          = Enums.EditType;
-	This["QuickChoice"]                       = Enums.Boolean;
-	This["ChoiceMode"]                        = Enums.ChoiceMode;
+	This["PredefinedDataUpdate"]              = "String"; //Enums.PredefinedDataUpdate;
+	This["EditType"]                          = "String"; //Enums.EditType;
+	This["QuickChoice"]                       = "Boolean"; //Enums.Boolean;
+	This["ChoiceMode"]                        = "String"; //Enums.ChoiceMode;
 	This["InputByString"]                     = "FieldList";
-	This["CreateOnInput"]                     = Enums.CreateOnInput;
-	This["SearchStringModeOnInputByString"]   = Enums.SearchStringModeOnInputByString;
-	This["ChoiceDataGetModeOnInputByString"]  = Enums.ChoiceDataGetModeOnInputByString;
-	This["FullTextSearchOnInputByString"]     = Enums.FullTextSearchOnInputByString;
-	This["ChoiceHistoryOnInput"]              = Enums.ChoiceHistoryOnInput;
+	This["CreateOnInput"]                     = "String"; //Enums.CreateOnInput;
+	This["SearchStringModeOnInputByString"]   = "String"; //Enums.SearchStringModeOnInputByString;
+	This["ChoiceDataGetModeOnInputByString"]  = "String"; //Enums.ChoiceDataGetModeOnInputByString;
+	This["FullTextSearchOnInputByString"]     = "String"; //Enums.FullTextSearchOnInputByString;
+	This["ChoiceHistoryOnInput"]              = "String"; //Enums.ChoiceHistoryOnInput;
 	This["DefaultObjectForm"]                 = "MDObjectRef";
 	This["DefaultFolderForm"]                 = "MDObjectRef";
 	This["DefaultListForm"]                   = "MDObjectRef";
@@ -1468,8 +1474,8 @@ Function ChartOfCharacteristicTypesProperties()
 	This["AuxiliaryFolderChoiceForm"]         = "MDObjectRef";
 	This["BasedOn"]                           = "MDListType";
 	This["DataLockFields"]                    = "FieldList";
-	This["DataLockControlMode"]               = Enums.DefaultDataLockControlMode;
-	This["FullTextSearch"]                    = Enums.FullTextSearchUsing;
+	This["DataLockControlMode"]               = "String"; //Enums.DefaultDataLockControlMode;
+	This["FullTextSearch"]                    = "String"; //Enums.FullTextSearchUsing;
 	This["ObjectPresentation"]                = "LocalStringType";
 	This["ExtendedObjectPresentation"]        = "LocalStringType";
 	This["ListPresentation"]                  = "LocalStringType";
@@ -1505,10 +1511,10 @@ Function CommandGroupProperties()
 	This["Name"]            = "String";
 	This["Synonym"]         = "LocalStringType";
 	This["Comment"]         = "String";
-	This["Representation"]  = Enums.ButtonRepresentation;
+	This["Representation"]  = "String"; //Enums.ButtonRepresentation;
 	This["ToolTip"]         = "LocalStringType";
 	//This["Picture"]         = ;
-	This["Category"]        = Enums.CommandGroupCategory;
+	This["Category"]        = "String"; //Enums.CommandGroupCategory;
 	Return This;
 EndFunction // CommandGroupProperties()
 
@@ -1536,40 +1542,40 @@ Function CommonAttributeProperties()
 	This["Synonym"]                            = "LocalStringType";
 	This["Comment"]                            = "String";
 	This["Type"]                               = "TypeDescription";
-	This["PasswordMode"]                       = Enums.Boolean;
+	This["PasswordMode"]                       = "Boolean"; //Enums.Boolean;
 	This["Format"]                             = "LocalStringType";
 	This["EditFormat"]                         = "LocalStringType";
 	This["ToolTip"]                            = "LocalStringType";
-	This["MarkNegatives"]                      = Enums.Boolean;
+	This["MarkNegatives"]                      = "Boolean"; //Enums.Boolean;
 	This["Mask"]                               = "String";
-	This["MultiLine"]                          = Enums.Boolean;
-	This["ExtendedEdit"]                       = Enums.Boolean;
+	This["MultiLine"]                          = "Boolean"; //Enums.Boolean;
+	This["ExtendedEdit"]                       = "Boolean"; //Enums.Boolean;
 	//This["MinValue"]                           = ;
 	//This["MaxValue"]                           = ;
-	This["FillFromFillingValue"]               = Enums.Boolean;
+	This["FillFromFillingValue"]               = "Boolean"; //Enums.Boolean;
 	//This["FillValue"]                          = ;
-	This["FillChecking"]                       = Enums.FillChecking;
-	This["ChoiceFoldersAndItems"]              = Enums.FoldersAndItemsUse;
+	This["FillChecking"]                       = "String"; //Enums.FillChecking;
+	This["ChoiceFoldersAndItems"]              = "String"; //Enums.FoldersAndItemsUse;
 	This["ChoiceParameterLinks"]               = "ChoiceParameterLinks";
 	//This["ChoiceParameters"]                   = ;
-	This["QuickChoice"]                        = Enums.UseQuickChoice;
-	This["CreateOnInput"]                      = Enums.CreateOnInput;
+	This["QuickChoice"]                        = "String"; //Enums.UseQuickChoice;
+	This["CreateOnInput"]                      = "String"; //Enums.CreateOnInput;
 	This["ChoiceForm"]                         = "MDObjectRef";
 	This["LinkByType"]                         = "TypeLink";
-	This["ChoiceHistoryOnInput"]               = Enums.ChoiceHistoryOnInput;
+	This["ChoiceHistoryOnInput"]               = "String"; //Enums.ChoiceHistoryOnInput;
 	//This["Content"]                            = CommonAttributeContent();
-	This["AutoUse"]                            = Enums.CommonAttributeAutoUse;
-	This["DataSeparation"]                     = Enums.CommonAttributeDataSeparation;
-	This["SeparatedDataUse"]                   = Enums.CommonAttributeSeparatedDataUse;
+	This["AutoUse"]                            = "String"; //Enums.CommonAttributeAutoUse;
+	This["DataSeparation"]                     = "String"; //Enums.CommonAttributeDataSeparation;
+	This["SeparatedDataUse"]                   = "String"; //Enums.CommonAttributeSeparatedDataUse;
 	This["DataSeparationValue"]                = "MDObjectRef";
 	This["DataSeparationUse"]                  = "MDObjectRef";
 	This["ConditionalSeparation"]              = "MDObjectRef";
-	This["UsersSeparation"]                    = Enums.CommonAttributeUsersSeparation;
-	This["AuthenticationSeparation"]           = Enums.CommonAttributeAuthenticationSeparation;
-	This["ConfigurationExtensionsSeparation"]  = Enums.CommonAttributeConfigurationExtensionsSeparation;
-	This["Indexing"]                           = Enums.Indexing;
-	This["FullTextSearch"]                     = Enums.FullTextSearchUsing;
-	This["DataHistory"]                        = Enums.DataHistoryUse;
+	This["UsersSeparation"]                    = "String"; //Enums.CommonAttributeUsersSeparation;
+	This["AuthenticationSeparation"]           = "String"; //Enums.CommonAttributeAuthenticationSeparation;
+	This["ConfigurationExtensionsSeparation"]  = "String"; //Enums.CommonAttributeConfigurationExtensionsSeparation;
+	This["Indexing"]                           = "String"; //Enums.Indexing;
+	This["FullTextSearch"]                     = "String"; //Enums.FullTextSearchUsing;
+	This["DataHistory"]                        = "String"; //Enums.DataHistoryUse;
 	Return This;
 EndFunction // CommonAttributeProperties()
 
@@ -1597,14 +1603,14 @@ Function CommonCommandProperties()
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
 	//This["Group"]                  = IncludeInCommandCategoriesType;
-	This["Representation"]         = Enums.ButtonRepresentation;
+	This["Representation"]         = "String"; //Enums.ButtonRepresentation;
 	This["ToolTip"]                = "LocalStringType";
 	//This["Picture"]                = ;
 	//This["Shortcut"]               = ;
-	This["IncludeHelpInContents"]  = Enums.Boolean;
+	This["IncludeHelpInContents"]  = "Boolean"; //Enums.Boolean;
 	This["CommandParameterType"]   = "TypeDescription";
-	This["ParameterUseMode"]       = Enums.CommandParameterUseMode;
-	This["ModifiesData"]           = Enums.Boolean;
+	This["ParameterUseMode"]       = "String"; //Enums.CommandParameterUseMode;
+	This["ModifiesData"]           = "Boolean"; //Enums.Boolean;
 	Return This;
 EndFunction // CommonCommandProperties()
 
@@ -1631,10 +1637,10 @@ Function CommonFormProperties()
 	This["Name"]                   = "String";
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
-	This["FormType"]               = Enums.FormType;
-	This["IncludeHelpInContents"]  = Enums.Boolean;
+	This["FormType"]               = "String"; //Enums.FormType;
+	This["IncludeHelpInContents"]  = "Boolean"; //Enums.Boolean;
 	//This["UsePurposes"]            = "FixedArray";
-	This["UseStandardCommands"]    = Enums.Boolean;
+	This["UseStandardCommands"]    = "Boolean"; //Enums.Boolean;
 	This["ExtendedPresentation"]   = "LocalStringType";
 	This["Explanation"]            = "LocalStringType";
 	Return This;
@@ -1663,15 +1669,15 @@ Function CommonModuleProperties()
 	This["Name"]                       = "String";
 	This["Synonym"]                    = "LocalStringType";
 	This["Comment"]                    = "String";
-	This["Global"]                     = Enums.Boolean;
-	This["ClientManagedApplication"]   = Enums.Boolean;
-	This["Server"]                     = Enums.Boolean;
-	This["ExternalConnection"]         = Enums.Boolean;
-	This["ClientOrdinaryApplication"]  = Enums.Boolean;
-	This["Client"]                     = Enums.Boolean;
-	This["ServerCall"]                 = Enums.Boolean;
-	This["Privileged"]                 = Enums.Boolean;
-	This["ReturnValuesReuse"]          = Enums.ReturnValuesReuse;
+	This["Global"]                     = "Boolean"; //Enums.Boolean;
+	This["ClientManagedApplication"]   = "Boolean"; //Enums.Boolean;
+	This["Server"]                     = "Boolean"; //Enums.Boolean;
+	This["ExternalConnection"]         = "Boolean"; //Enums.Boolean;
+	This["ClientOrdinaryApplication"]  = "Boolean"; //Enums.Boolean;
+	This["Client"]                     = "Boolean"; //Enums.Boolean;
+	This["ServerCall"]                 = "Boolean"; //Enums.Boolean;
+	This["Privileged"]                 = "Boolean"; //Enums.Boolean;
+	This["ReturnValuesReuse"]          = "String"; //Enums.ReturnValuesReuse;
 	Return This;
 EndFunction // CommonModuleProperties()
 
@@ -1724,7 +1730,7 @@ Function CommonTemplateProperties()
 	This["Name"]          = "String";
 	This["Synonym"]       = "LocalStringType";
 	This["Comment"]       = "String";
-	This["TemplateType"]  = Enums.TemplateType;
+	This["TemplateType"]  = "String"; //Enums.TemplateType;
 	Return This;
 EndFunction // CommonTemplateProperties()
 
@@ -1752,29 +1758,29 @@ Function ConstantProperties()
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
 	This["Type"]                   = "TypeDescription";
-	This["UseStandardCommands"]    = Enums.Boolean;
+	This["UseStandardCommands"]    = "Boolean"; //Enums.Boolean;
 	This["DefaultForm"]            = "MDObjectRef";
 	This["ExtendedPresentation"]   = "LocalStringType";
 	This["Explanation"]            = "LocalStringType";
-	This["PasswordMode"]           = Enums.Boolean;
+	This["PasswordMode"]           = "Boolean"; //Enums.Boolean;
 	This["Format"]                 = "LocalStringType";
 	This["EditFormat"]             = "LocalStringType";
 	This["ToolTip"]                = "LocalStringType";
-	This["MarkNegatives"]          = Enums.Boolean;
+	This["MarkNegatives"]          = "Boolean"; //Enums.Boolean;
 	This["Mask"]                   = "String";
-	This["MultiLine"]              = Enums.Boolean;
-	This["ExtendedEdit"]           = Enums.Boolean;
+	This["MultiLine"]              = "Boolean"; //Enums.Boolean;
+	This["ExtendedEdit"]           = "Boolean"; //Enums.Boolean;
 	//This["MinValue"]               = ;
 	//This["MaxValue"]               = ;
-	This["FillChecking"]           = Enums.FillChecking;
-	This["ChoiceFoldersAndItems"]  = Enums.FoldersAndItemsUse;
+	This["FillChecking"]           = "String"; //Enums.FillChecking;
+	This["ChoiceFoldersAndItems"]  = "String"; //Enums.FoldersAndItemsUse;
 	This["ChoiceParameterLinks"]   = "ChoiceParameterLinks";
 	//This["ChoiceParameters"]       = ;
-	This["QuickChoice"]            = Enums.UseQuickChoice;
+	This["QuickChoice"]            = "String"; //Enums.UseQuickChoice;
 	This["ChoiceForm"]             = "MDObjectRef";
 	This["LinkByType"]             = "TypeLink";
-	This["ChoiceHistoryOnInput"]   = Enums.ChoiceHistoryOnInput;
-	This["DataLockControlMode"]    = Enums.DefaultDataLockControlMode;
+	This["ChoiceHistoryOnInput"]   = "String"; //Enums.ChoiceHistoryOnInput;
+	This["DataLockControlMode"]    = "String"; //Enums.DefaultDataLockControlMode;
 	Return This;
 EndFunction // ConstantProperties()
 
@@ -1801,10 +1807,10 @@ Function DataProcessorProperties()
 	This["Name"]                   = "String";
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
-	This["UseStandardCommands"]    = Enums.Boolean;
+	This["UseStandardCommands"]    = "Boolean"; //Enums.Boolean;
 	This["DefaultForm"]            = "MDObjectRef";
 	This["AuxiliaryForm"]          = "MDObjectRef";
-	This["IncludeHelpInContents"]  = Enums.Boolean;
+	This["IncludeHelpInContents"]  = "Boolean"; //Enums.Boolean;
 	This["ExtendedPresentation"]   = "LocalStringType";
 	This["Explanation"]            = "LocalStringType";
 	Return This;
@@ -1839,9 +1845,9 @@ Function DocumentJournalProperties()
 	This["Comment"]                   = "String";
 	This["DefaultForm"]               = "MDObjectRef";
 	This["AuxiliaryForm"]             = "MDObjectRef";
-	This["UseStandardCommands"]       = Enums.Boolean;
+	This["UseStandardCommands"]       = "Boolean"; //Enums.Boolean;
 	This["RegisteredDocuments"]       = "MDListType";
-	This["IncludeHelpInContents"]     = Enums.Boolean;
+	This["IncludeHelpInContents"]     = "Boolean"; //Enums.Boolean;
 	This["StandardAttributes"]        = "StandardAttributes";
 	This["ListPresentation"]          = "LocalStringType";
 	This["ExtendedListPresentation"]  = "LocalStringType";
@@ -1875,11 +1881,11 @@ Function DocumentNumeratorProperties()
 	This["Name"]                 = "String";
 	This["Synonym"]              = "LocalStringType";
 	This["Comment"]              = "String";
-	This["NumberType"]           = Enums.DocumentNumberType;
+	This["NumberType"]           = "String"; //Enums.DocumentNumberType;
 	This["NumberLength"]         = "Decimal";
-	This["NumberAllowedLength"]  = Enums.AllowedLength;
-	This["NumberPeriodicity"]    = Enums.DocumentNumberPeriodicity;
-	This["CheckUnique"]          = Enums.Boolean;
+	This["NumberAllowedLength"]  = "String"; //Enums.AllowedLength;
+	This["NumberPeriodicity"]    = "String"; //Enums.DocumentNumberPeriodicity;
+	This["CheckUnique"]          = "Boolean"; //Enums.Boolean;
 	Return This;
 EndFunction // DocumentNumeratorProperties()
 
@@ -1906,47 +1912,47 @@ Function DocumentProperties()
 	This["Name"]                              = "String";
 	This["Synonym"]                           = "LocalStringType";
 	This["Comment"]                           = "String";
-	This["UseStandardCommands"]               = Enums.Boolean;
+	This["UseStandardCommands"]               = "Boolean"; //Enums.Boolean;
 	This["Numerator"]                         = "MDObjectRef";
-	This["NumberType"]                        = Enums.DocumentNumberType;
+	This["NumberType"]                        = "String"; //Enums.DocumentNumberType;
 	This["NumberLength"]                      = "Decimal";
-	This["NumberAllowedLength"]               = Enums.AllowedLength;
-	This["NumberPeriodicity"]                 = Enums.DocumentNumberPeriodicity;
-	This["CheckUnique"]                       = Enums.Boolean;
-	This["Autonumbering"]                     = Enums.Boolean;
+	This["NumberAllowedLength"]               = "String"; //Enums.AllowedLength;
+	This["NumberPeriodicity"]                 = "String"; //Enums.DocumentNumberPeriodicity;
+	This["CheckUnique"]                       = "Boolean"; //Enums.Boolean;
+	This["Autonumbering"]                     = "Boolean"; //Enums.Boolean;
 	This["StandardAttributes"]                = "StandardAttributes";
 	This["Characteristics"]                   = "Characteristics";
 	This["BasedOn"]                           = "MDListType";
 	This["InputByString"]                     = "FieldList";
-	This["CreateOnInput"]                     = Enums.CreateOnInput;
-	This["SearchStringModeOnInputByString"]   = Enums.SearchStringModeOnInputByString;
-	This["FullTextSearchOnInputByString"]     = Enums.FullTextSearchOnInputByString;
-	This["ChoiceDataGetModeOnInputByString"]  = Enums.ChoiceDataGetModeOnInputByString;
+	This["CreateOnInput"]                     = "String"; //Enums.CreateOnInput;
+	This["SearchStringModeOnInputByString"]   = "String"; //Enums.SearchStringModeOnInputByString;
+	This["FullTextSearchOnInputByString"]     = "String"; //Enums.FullTextSearchOnInputByString;
+	This["ChoiceDataGetModeOnInputByString"]  = "String"; //Enums.ChoiceDataGetModeOnInputByString;
 	This["DefaultObjectForm"]                 = "MDObjectRef";
 	This["DefaultListForm"]                   = "MDObjectRef";
 	This["DefaultChoiceForm"]                 = "MDObjectRef";
 	This["AuxiliaryObjectForm"]               = "MDObjectRef";
 	This["AuxiliaryListForm"]                 = "MDObjectRef";
 	This["AuxiliaryChoiceForm"]               = "MDObjectRef";
-	This["Posting"]                           = Enums.Posting;
-	This["RealTimePosting"]                   = Enums.RealTimePosting;
-	This["RegisterRecordsDeletion"]           = Enums.RegisterRecordsDeletion;
-	This["RegisterRecordsWritingOnPost"]      = Enums.RegisterRecordsWritingOnPost;
-	This["SequenceFilling"]                   = Enums.SequenceFilling;
+	This["Posting"]                           = "String"; //Enums.Posting;
+	This["RealTimePosting"]                   = "String"; //Enums.RealTimePosting;
+	This["RegisterRecordsDeletion"]           = "String"; //Enums.RegisterRecordsDeletion;
+	This["RegisterRecordsWritingOnPost"]      = "String"; //Enums.RegisterRecordsWritingOnPost;
+	This["SequenceFilling"]                   = "String"; //Enums.SequenceFilling;
 	This["RegisterRecords"]                   = "MDListType";
-	This["PostInPrivilegedMode"]              = Enums.Boolean;
-	This["UnpostInPrivilegedMode"]            = Enums.Boolean;
-	This["IncludeHelpInContents"]             = Enums.Boolean;
+	This["PostInPrivilegedMode"]              = "Boolean"; //Enums.Boolean;
+	This["UnpostInPrivilegedMode"]            = "Boolean"; //Enums.Boolean;
+	This["IncludeHelpInContents"]             = "Boolean"; //Enums.Boolean;
 	This["DataLockFields"]                    = "FieldList";
-	This["DataLockControlMode"]               = Enums.DefaultDataLockControlMode;
-	This["FullTextSearch"]                    = Enums.FullTextSearchUsing;
+	This["DataLockControlMode"]               = "String"; //Enums.DefaultDataLockControlMode;
+	This["FullTextSearch"]                    = "String"; //Enums.FullTextSearchUsing;
 	This["ObjectPresentation"]                = "LocalStringType";
 	This["ExtendedObjectPresentation"]        = "LocalStringType";
 	This["ListPresentation"]                  = "LocalStringType";
 	This["ExtendedListPresentation"]          = "LocalStringType";
 	This["Explanation"]                       = "LocalStringType";
-	This["ChoiceHistoryOnInput"]              = Enums.ChoiceHistoryOnInput;
-	This["DataHistory"]                       = Enums.DataHistoryUse;
+	This["ChoiceHistoryOnInput"]              = "String"; //Enums.ChoiceHistoryOnInput;
+	This["DataHistory"]                       = "String"; //Enums.DataHistoryUse;
 	Return This;
 EndFunction // DocumentProperties()
 
@@ -1977,11 +1983,11 @@ Function EnumProperties()
 	This["Name"]                      = "String";
 	This["Synonym"]                   = "LocalStringType";
 	This["Comment"]                   = "String";
-	This["UseStandardCommands"]       = Enums.Boolean;
+	This["UseStandardCommands"]       = "Boolean"; //Enums.Boolean;
 	This["StandardAttributes"]        = "StandardAttributes";
 	This["Characteristics"]           = "Characteristics";
-	This["QuickChoice"]               = Enums.Boolean;
-	This["ChoiceMode"]                = Enums.ChoiceMode;
+	This["QuickChoice"]               = "Boolean"; //Enums.Boolean;
+	This["ChoiceMode"]                = "String"; //Enums.ChoiceMode;
 	This["DefaultListForm"]           = "MDObjectRef";
 	This["DefaultChoiceForm"]         = "MDObjectRef";
 	This["AuxiliaryListForm"]         = "MDObjectRef";
@@ -1989,7 +1995,7 @@ Function EnumProperties()
 	This["ListPresentation"]          = "LocalStringType";
 	This["ExtendedListPresentation"]  = "LocalStringType";
 	This["Explanation"]               = "LocalStringType";
-	This["ChoiceHistoryOnInput"]      = Enums.ChoiceHistoryOnInput;
+	This["ChoiceHistoryOnInput"]      = "String"; //Enums.ChoiceHistoryOnInput;
 	Return This;
 EndFunction // EnumProperties()
 
@@ -2048,18 +2054,18 @@ Function ExchangePlanProperties()
 	This["Name"]                              = "String";
 	This["Synonym"]                           = "LocalStringType";
 	This["Comment"]                           = "String";
-	This["UseStandardCommands"]               = Enums.Boolean;
+	This["UseStandardCommands"]               = "Boolean"; //Enums.Boolean;
 	This["CodeLength"]                        = "Decimal";
-	This["CodeAllowedLength"]                 = Enums.AllowedLength;
+	This["CodeAllowedLength"]                 = "String"; //Enums.AllowedLength;
 	This["DescriptionLength"]                 = "Decimal";
-	This["DefaultPresentation"]               = Enums.DataExchangeMainPresentation;
-	This["EditType"]                          = Enums.EditType;
-	This["QuickChoice"]                       = Enums.Boolean;
-	This["ChoiceMode"]                        = Enums.ChoiceMode;
+	This["DefaultPresentation"]               = "String"; //Enums.DataExchangeMainPresentation;
+	This["EditType"]                          = "String"; //Enums.EditType;
+	This["QuickChoice"]                       = "Boolean"; //Enums.Boolean;
+	This["ChoiceMode"]                        = "String"; //Enums.ChoiceMode;
 	This["InputByString"]                     = "FieldList";
-	This["SearchStringModeOnInputByString"]   = Enums.SearchStringModeOnInputByString;
-	This["FullTextSearchOnInputByString"]     = Enums.FullTextSearchOnInputByString;
-	This["ChoiceDataGetModeOnInputByString"]  = Enums.ChoiceDataGetModeOnInputByString;
+	This["SearchStringModeOnInputByString"]   = "String"; //Enums.SearchStringModeOnInputByString;
+	This["FullTextSearchOnInputByString"]     = "String"; //Enums.FullTextSearchOnInputByString;
+	This["ChoiceDataGetModeOnInputByString"]  = "String"; //Enums.ChoiceDataGetModeOnInputByString;
 	This["DefaultObjectForm"]                 = "MDObjectRef";
 	This["DefaultListForm"]                   = "MDObjectRef";
 	This["DefaultChoiceForm"]                 = "MDObjectRef";
@@ -2069,13 +2075,13 @@ Function ExchangePlanProperties()
 	This["StandardAttributes"]                = "StandardAttributes";
 	This["Characteristics"]                   = "Characteristics";
 	This["BasedOn"]                           = "MDListType";
-	This["DistributedInfoBase"]               = Enums.Boolean;
-	This["CreateOnInput"]                     = Enums.CreateOnInput;
-	This["ChoiceHistoryOnInput"]              = Enums.ChoiceHistoryOnInput;
-	This["IncludeHelpInContents"]             = Enums.Boolean;
+	This["DistributedInfoBase"]               = "Boolean"; //Enums.Boolean;
+	This["CreateOnInput"]                     = "String"; //Enums.CreateOnInput;
+	This["ChoiceHistoryOnInput"]              = "String"; //Enums.ChoiceHistoryOnInput;
+	This["IncludeHelpInContents"]             = "Boolean"; //Enums.Boolean;
 	This["DataLockFields"]                    = "FieldList";
-	This["DataLockControlMode"]               = Enums.DefaultDataLockControlMode;
-	This["FullTextSearch"]                    = Enums.FullTextSearchUsing;
+	This["DataLockControlMode"]               = "String"; //Enums.DefaultDataLockControlMode;
+	This["FullTextSearch"]                    = "String"; //Enums.FullTextSearchUsing;
 	This["ObjectPresentation"]                = "LocalStringType";
 	This["ExtendedObjectPresentation"]        = "LocalStringType";
 	This["ListPresentation"]                  = "LocalStringType";
@@ -2112,7 +2118,7 @@ Function FilterCriterionProperties()
 	This["Synonym"]                   = "LocalStringType";
 	This["Comment"]                   = "String";
 	This["Type"]                      = "TypeDescription";
-	This["UseStandardCommands"]       = Enums.Boolean;
+	This["UseStandardCommands"]       = "Boolean"; //Enums.Boolean;
 	This["Content"]                   = "MDListType";
 	This["DefaultForm"]               = "MDObjectRef";
 	This["AuxiliaryForm"]             = "MDObjectRef";
@@ -2147,7 +2153,7 @@ Function FunctionalOptionProperties()
 	This["Synonym"]            = "LocalStringType";
 	This["Comment"]            = "String";
 	This["Location"]           = "MDObjectRef";
-	This["PrivilegedGetMode"]  = Enums.Boolean;
+	This["PrivilegedGetMode"]  = "Boolean"; //Enums.Boolean;
 	//This["Content"]            = FuncOptionContentType();
 	Return This;
 EndFunction // FunctionalOptionProperties()
@@ -2203,7 +2209,7 @@ Function HTTPServiceProperties()
 	This["Synonym"]        = "LocalStringType";
 	This["Comment"]        = "String";
 	This["RootURL"]        = "String";
-	This["ReuseSessions"]  = Enums.SessionReuseMode;
+	This["ReuseSessions"]  = "String"; //Enums.SessionReuseMode;
 	This["SessionMaxAge"]  = "Decimal";
 	Return This;
 EndFunction // HTTPServiceProperties()
@@ -2231,27 +2237,27 @@ Function InformationRegisterProperties()
 	This["Name"]                            = "String";
 	This["Synonym"]                         = "LocalStringType";
 	This["Comment"]                         = "String";
-	This["UseStandardCommands"]             = Enums.Boolean;
-	This["EditType"]                        = Enums.EditType;
+	This["UseStandardCommands"]             = "Boolean"; //Enums.Boolean;
+	This["EditType"]                        = "String"; //Enums.EditType;
 	This["DefaultRecordForm"]               = "MDObjectRef";
 	This["DefaultListForm"]                 = "MDObjectRef";
 	This["AuxiliaryRecordForm"]             = "MDObjectRef";
 	This["AuxiliaryListForm"]               = "MDObjectRef";
 	This["StandardAttributes"]              = "StandardAttributes";
-	This["InformationRegisterPeriodicity"]  = Enums.InformationRegisterPeriodicity;
-	This["WriteMode"]                       = Enums.RegisterWriteMode;
-	This["MainFilterOnPeriod"]              = Enums.Boolean;
-	This["IncludeHelpInContents"]           = Enums.Boolean;
-	This["DataLockControlMode"]             = Enums.DefaultDataLockControlMode;
-	This["FullTextSearch"]                  = Enums.FullTextSearchUsing;
-	This["EnableTotalsSliceFirst"]          = Enums.Boolean;
-	This["EnableTotalsSliceLast"]           = Enums.Boolean;
+	This["InformationRegisterPeriodicity"]  = "String"; //Enums.InformationRegisterPeriodicity;
+	This["WriteMode"]                       = "String"; //Enums.RegisterWriteMode;
+	This["MainFilterOnPeriod"]              = "Boolean"; //Enums.Boolean;
+	This["IncludeHelpInContents"]           = "Boolean"; //Enums.Boolean;
+	This["DataLockControlMode"]             = "String"; //Enums.DefaultDataLockControlMode;
+	This["FullTextSearch"]                  = "String"; //Enums.FullTextSearchUsing;
+	This["EnableTotalsSliceFirst"]          = "Boolean"; //Enums.Boolean;
+	This["EnableTotalsSliceLast"]           = "Boolean"; //Enums.Boolean;
 	This["RecordPresentation"]              = "LocalStringType";
 	This["ExtendedRecordPresentation"]      = "LocalStringType";
 	This["ListPresentation"]                = "LocalStringType";
 	This["ExtendedListPresentation"]        = "LocalStringType";
 	This["Explanation"]                     = "LocalStringType";
-	This["DataHistory"]                     = Enums.DataHistoryUse;
+	This["DataHistory"]                     = "String"; //Enums.DataHistoryUse;
 	Return This;
 EndFunction // InformationRegisterProperties()
 
@@ -2283,7 +2289,7 @@ Function ReportProperties()
 	This["Name"]                       = "String";
 	This["Synonym"]                    = "LocalStringType";
 	This["Comment"]                    = "String";
-	This["UseStandardCommands"]        = Enums.Boolean;
+	This["UseStandardCommands"]        = "Boolean"; //Enums.Boolean;
 	This["DefaultForm"]                = "MDObjectRef";
 	This["AuxiliaryForm"]              = "MDObjectRef";
 	This["MainDataCompositionSchema"]  = "MDObjectRef";
@@ -2292,7 +2298,7 @@ Function ReportProperties()
 	This["DefaultVariantForm"]         = "MDObjectRef";
 	This["VariantsStorage"]            = "MDObjectRef";
 	This["SettingsStorage"]            = "MDObjectRef";
-	This["IncludeHelpInContents"]      = Enums.Boolean;
+	This["IncludeHelpInContents"]      = "Boolean"; //Enums.Boolean;
 	This["ExtendedPresentation"]       = "LocalStringType";
 	This["Explanation"]                = "LocalStringType";
 	Return This;
@@ -2354,8 +2360,8 @@ Function ScheduledJobProperties()
 	This["MethodName"]                = "MDMethodRef";
 	This["Description"]               = "String";
 	This["Key"]                       = "String";
-	This["Use"]                       = Enums.Boolean;
-	This["Predefined"]                = Enums.Boolean;
+	This["Use"]                       = "Boolean"; //Enums.Boolean;
+	This["Predefined"]                = "Boolean"; //Enums.Boolean;
 	This["RestartCountOnFailure"]     = "Decimal";
 	This["RestartIntervalOnFailure"]  = "Decimal";
 	Return This;
@@ -2384,10 +2390,10 @@ Function SequenceProperties()
 	This["Name"]                   = "String";
 	This["Synonym"]                = "LocalStringType";
 	This["Comment"]                = "String";
-	This["MoveBoundaryOnPosting"]  = Enums.MoveBoundaryOnPosting;
+	This["MoveBoundaryOnPosting"]  = "String"; //Enums.MoveBoundaryOnPosting;
 	This["Documents"]              = "MDListType";
 	This["RegisterRecords"]        = "MDListType";
-	This["DataLockControlMode"]    = Enums.DefaultDataLockControlMode;
+	This["DataLockControlMode"]    = "String"; //Enums.DefaultDataLockControlMode;
 	Return This;
 EndFunction // SequenceProperties()
 
@@ -2472,8 +2478,8 @@ Function SubsystemProperties()
 	This["Name"]                       = "String";
 	This["Synonym"]                    = "LocalStringType";
 	This["Comment"]                    = "String";
-	This["IncludeHelpInContents"]      = Enums.Boolean;
-	This["IncludeInCommandInterface"]  = Enums.Boolean;
+	This["IncludeHelpInContents"]      = "Boolean"; //Enums.Boolean;
+	This["IncludeInCommandInterface"]  = "Boolean"; //Enums.Boolean;
 	This["Explanation"]                = "LocalStringType";
 	//This["Picture"]                    = ;
 	This["Content"]                    = "MDListType";
@@ -2503,13 +2509,13 @@ Function TaskProperties()
 	This["Name"]                              = "String";
 	This["Synonym"]                           = "LocalStringType";
 	This["Comment"]                           = "String";
-	This["UseStandardCommands"]               = Enums.Boolean;
-	This["NumberType"]                        = Enums.TaskNumberType;
+	This["UseStandardCommands"]               = "Boolean"; //Enums.Boolean;
+	This["NumberType"]                        = "String"; //Enums.TaskNumberType;
 	This["NumberLength"]                      = "Decimal";
-	This["NumberAllowedLength"]               = Enums.AllowedLength;
-	This["CheckUnique"]                       = Enums.Boolean;
-	This["Autonumbering"]                     = Enums.Boolean;
-	This["TaskNumberAutoPrefix"]              = Enums.TaskNumberAutoPrefix;
+	This["NumberAllowedLength"]               = "String"; //Enums.AllowedLength;
+	This["CheckUnique"]                       = "Boolean"; //Enums.Boolean;
+	This["Autonumbering"]                     = "Boolean"; //Enums.Boolean;
+	This["TaskNumberAutoPrefix"]              = "String"; //Enums.TaskNumberAutoPrefix;
 	This["DescriptionLength"]                 = "Decimal";
 	This["Addressing"]                        = "MDObjectRef";
 	This["MainAddressingAttribute"]           = "MDObjectRef";
@@ -2517,24 +2523,24 @@ Function TaskProperties()
 	This["BasedOn"]                           = "MDListType";
 	This["StandardAttributes"]                = "StandardAttributes";
 	This["Characteristics"]                   = "Characteristics";
-	This["DefaultPresentation"]               = Enums.TaskMainPresentation;
-	This["EditType"]                          = Enums.EditType;
+	This["DefaultPresentation"]               = "String"; //Enums.TaskMainPresentation;
+	This["EditType"]                          = "String"; //Enums.EditType;
 	This["InputByString"]                     = "FieldList";
-	This["SearchStringModeOnInputByString"]   = Enums.SearchStringModeOnInputByString;
-	This["FullTextSearchOnInputByString"]     = Enums.FullTextSearchOnInputByString;
-	This["ChoiceDataGetModeOnInputByString"]  = Enums.ChoiceDataGetModeOnInputByString;
-	This["CreateOnInput"]                     = Enums.CreateOnInput;
+	This["SearchStringModeOnInputByString"]   = "String"; //Enums.SearchStringModeOnInputByString;
+	This["FullTextSearchOnInputByString"]     = "String"; //Enums.FullTextSearchOnInputByString;
+	This["ChoiceDataGetModeOnInputByString"]  = "String"; //Enums.ChoiceDataGetModeOnInputByString;
+	This["CreateOnInput"]                     = "String"; //Enums.CreateOnInput;
 	This["DefaultObjectForm"]                 = "MDObjectRef";
 	This["DefaultListForm"]                   = "MDObjectRef";
 	This["DefaultChoiceForm"]                 = "MDObjectRef";
 	This["AuxiliaryObjectForm"]               = "MDObjectRef";
 	This["AuxiliaryListForm"]                 = "MDObjectRef";
 	This["AuxiliaryChoiceForm"]               = "MDObjectRef";
-	This["ChoiceHistoryOnInput"]              = Enums.ChoiceHistoryOnInput;
-	This["IncludeHelpInContents"]             = Enums.Boolean;
+	This["ChoiceHistoryOnInput"]              = "String"; //Enums.ChoiceHistoryOnInput;
+	This["IncludeHelpInContents"]             = "Boolean"; //Enums.Boolean;
 	This["DataLockFields"]                    = "FieldList";
-	This["DataLockControlMode"]               = Enums.DefaultDataLockControlMode;
-	This["FullTextSearch"]                    = Enums.FullTextSearchUsing;
+	This["DataLockControlMode"]               = "String"; //Enums.DefaultDataLockControlMode;
+	This["FullTextSearch"]                    = "String"; //Enums.FullTextSearchUsing;
 	This["ObjectPresentation"]                = "LocalStringType";
 	This["ExtendedObjectPresentation"]        = "LocalStringType";
 	This["ListPresentation"]                  = "LocalStringType";
@@ -2574,7 +2580,7 @@ Function WebServiceProperties()
 	This["Namespace"]           = "String";
 	//This["XDTOPackages"]        = "ValueList";
 	This["DescriptorFileName"]  = "String";
-	This["ReuseSessions"]       = Enums.SessionReuseMode;
+	This["ReuseSessions"]       = "String"; //Enums.SessionReuseMode;
 	This["SessionMaxAge"]       = "Decimal";
 	Return This;
 EndFunction // WebServiceProperties()
@@ -2599,17 +2605,17 @@ Function OperationProperties()
 	This["Synonym"]                 = "LocalStringType";
 	This["Comment"]                 = "String";
 	This["XDTOReturningValueType"]  = "QName";
-	This["Nillable"]                = Enums.Boolean;
-	This["Transactioned"]           = Enums.Boolean;
+	This["Nillable"]                = "Boolean"; //Enums.Boolean;
+	This["Transactioned"]           = "Boolean"; //Enums.Boolean;
 	This["ProcedureName"]           = "String";
 	Return This;
-EndFunction // OperationProperties() 
+EndFunction // OperationProperties()
 
 Function OperationChildObjects()
 	This = Object();
 	Items = This.Items;
 	Items["Parameter"] = Parameter();
-	Return This;	
+	Return This;
 EndFunction // OperationChildObjects()
 
 Function Parameter()
@@ -2624,10 +2630,10 @@ Function ParameterProperties()
 	This["Synonym"]           = "LocalStringType";
 	This["Comment"]           = "String";
 	This["XDTOValueType"]     = "QName";
-	This["Nillable"]          = Enums.Boolean;
-	This["TransferDirection"] = Enums.TransferDirection;
+	This["Nillable"]          = "Boolean"; //Enums.Boolean;
+	This["TransferDirection"] = "String"; //Enums.TransferDirection;
 	Return This;
-EndFunction // ParameterProperties() 
+EndFunction // ParameterProperties()
 
 #EndRegion // WebService
 
@@ -2694,8 +2700,8 @@ Function LogForm()
 	This["Title"] = "LocalStringType";
 	This["Width"] = "Decimal";
 	This["Height"] = "Decimal";
-	This["VerticalScroll"] = Enums.VerticalFormScroll;
-	This["WindowOpeningMode"] = Enums.FormWindowOpeningMode;
+	This["VerticalScroll"] = "String"; //Enums.VerticalFormScroll;
+	This["WindowOpeningMode"] = "String"; //Enums.FormWindowOpeningMode;
 	This["Attributes"] = FormAttributes();
 	This["Events"] = FormEvents();
 	This["ChildItems"] = "FormChildItems";
@@ -2718,7 +2724,7 @@ EndFunction // FormChildItems()
 
 Function FormUsualGroup()
 	This = Record(FormItemBase());
-	This["HorizontalAlign"] = Enums.ItemHorizontalLocation;
+	This["HorizontalAlign"] = "String"; //Enums.ItemHorizontalLocation;
 	This["United"] = "Boolean";
 	This["ShowTitle"] = "Boolean";
 	This["ChildItems"] = "FormChildItems";
