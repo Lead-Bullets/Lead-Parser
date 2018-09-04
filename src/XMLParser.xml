@@ -6,21 +6,21 @@
 				<xr:ClassId>c3831ec8-d8d5-4f93-8a22-f9bfae07327f</xr:ClassId>
 				<xr:ObjectId>1cbe5f8b-a4e3-4853-9bcc-7ba831f672a4</xr:ObjectId>
 			</xr:ContainedObject>
-			<xr:GeneratedType name="ExternalDataProcessorObject.LeadParser" category="Object">
+			<xr:GeneratedType name="ExternalDataProcessorObject.XMLParser" category="Object">
 				<xr:TypeId>533d429c-7199-4449-b0c5-8bea212129c2</xr:TypeId>
 				<xr:ValueId>51449d91-febf-4d03-9feb-be2195590bc1</xr:ValueId>
 			</xr:GeneratedType>
 		</InternalInfo>
 		<Properties>
-			<Name>LeadParser</Name>
+			<Name>XMLParser</Name>
 			<Synonym>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Lead-Parser</v8:content>
+					<v8:content>XML-Parser</v8:content>
 				</v8:item>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Lead-Parser</v8:content>
+					<v8:content>XML-Parser</v8:content>
 				</v8:item>
 			</Synonym>
 			<Comment/>
