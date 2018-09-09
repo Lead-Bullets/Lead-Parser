@@ -55,8 +55,16 @@ Function ParseRecord(XMLReader, Kinds, Kind, ReadToMap)
 EndFunction // ParseRecord()
 
 Function ParseObject(XMLReader, Kinds, Kind, ReadToMap)
-	Items = Kind.Items;
 	Data = ?(ReadToMap, New Map, New Structure);
+	Attributes = Kind.Attributes;
+	While XMLReader.ReadAttribute() Do
+		AttributeName = XMLReader.LocalName;
+		AttributeKind = Attributes[AttributeName];
+		If AttributeKind <> Undefined Then
+			Data.Insert(AttributeName, AttributeKind.AdjustValue(XMLReader.Value));
+		EndIf;
+	EndDo;
+	Items = Kind.Items;
 	For Each Item In Items Do
 		Data.Insert(Item.Key, New Array);
 	EndDo;
@@ -92,6 +100,7 @@ Function Kinds() Export
 	Kinds.Insert("MDMethodRef", "String");
 	Kinds.Insert("FieldRef", "String");
 	Kinds.Insert("DataPath", "String");
+	Kinds.Insert("LFEDataPath", "String");
 	Kinds.Insert("IncludeInCommandCategoriesType", "String");
 	Kinds.Insert("QName", "String");
 
@@ -198,7 +207,9 @@ Function Record(Base = Undefined)
 EndFunction // Record()
 
 Function Object(Base = Undefined)
-	Object = New Structure("Items", New Map);
+	Object = New Structure;
+	Object.Insert("Attributes", New Map);
+	Object.Insert("Items", New Map);
 	If Base <> Undefined Then
 		For Each Item In Base.Items Do
 			Object.Items.Add(Item);
@@ -2695,41 +2706,122 @@ EndFunction // XDTOPackageChildObjects()
 
 #Region LogForm
 
-Function LogForm()
+Function FormVisualEntity()
 	This = Record();
+	This["Events"] = FormEvents();
+	This["ChildItems"] =  "FormChildItems";
+	Return This;
+EndFunction // FormVisualEntity()
+
+Function LogForm()
+	This = Record(FormVisualEntity());
 	This["Title"] = "LocalStringType";
 	This["Width"] = "Decimal";
 	This["Height"] = "Decimal";
-	This["VerticalScroll"] = "String"; //Enums.VerticalFormScroll;
 	This["WindowOpeningMode"] = "String"; //Enums.FormWindowOpeningMode;
+	This["EnterKeyBehavior"] = "String"; //Enums.FormEnterKeyBehavior;
+	This["AutoSaveDataInSettings"] = "String"; //Enums.AutoSaveFormDataInSettings;
+	This["SaveDataInSettings"] = "String"; //Enums.SaveFormDataInSettings;
+	This["SettingsStorage"] = "MDObjectRef";
+	This["AutoTitle"] = "Boolean";
+	This["AutoURL"] = "Boolean";
+	// This["Group"] = "FormChildrenGroup";
+	// This["ChildrenAlign"] = "FormChildrenAlign";
+	// This["HorizontalSpacing"] = "FormItemSpacing";
+	// This["VerticalSpacing"] = "FormItemSpacing";
+	// This["HorizontalAlign"] = "ItemHorizontalAlignment";
+	// This["VerticalAlign"] = "ItemVerticalAlignment";
+	// This["ChildItemsWidth"] = "FormChildrenWidth";
+	This["AutoFillCheck"] = "Boolean";
+	This["Customizable"] = "Boolean";
+	This["Enabled"] = "Boolean";
+	This["ReadOnly"] = "Boolean";
+	// This["CommandBarLocation"] = "FormElementCommandBarLocation";
+	This["VerticalScroll"] = "String"; //Enums.LogFormScrollMode (VerticalFormScroll)
+	// This["ScalingMode"] = "FormBaseFontVariant";
+	This["Scale"] = "Decimal";
+	// This["ConversationsRepresentation"] = "LogFormShowConversations";
+	// This["CommandSet"] = "CommandsContent";
+	This["ShowTitle"] = "Boolean";
+	This["ShowCloseButton"] = "Boolean";
+	// This["UseForFoldersAndItems"] = "FoldersAndItemsUse";
+	// This["GroupList"] = "FormItemRef";
+	// This["AutoTime"] = "AutoTimeMode";
+	// This["UsePostingMode"] = "PostingModeUse";
+	This["RepostOnWrite"] = "Boolean";
+	This["ReportResult"] = "LFEDataPath";
+	This["DetailsData"] = "LFEDataPath";
+	// This["ReportFormType"] = "ReportFormType";
+	This["VariantAppearance"] = "LFEDataPath";
+	// This["AutoShowState"] = "AutoShowStateMode";
+	// This["CustomSettingsFolder"] = "FormItemRef";
 	This["Attributes"] = FormAttributes();
-	This["Events"] = FormEvents();
-	This["ChildItems"] = "FormChildItems";
-	Return This
+	// This["Commands"] = "FormCommands";
+	// This["Parameters"] = "FormParameters";
+	// This["CommandInterface"] = "FormCommandInterface";
+	// This["BaseForm"] = "Form";
+	Return This;
 EndFunction // LogForm()
 
 Function FormItemBase()
-	This = Record();
+	This = Record(FormVisualEntity());
 	This["id"] = "Decimal";
 	This["name"] = "String";
 	Return This;
 EndFunction // FormItemBase()
 
+Function GroupBase()
+	This = Record(FormItemBase());
+	This["Visible"] = "Boolean";
+	This["UserVisible"] = "String"; //Enums.AdjustableBoolean
+	This["Enabled"] = "Boolean";
+	This["ReadOnly"] = "Boolean";
+	This["EnableContentChange"] = "Boolean";
+	This["Title"] = "LocalStringType";
+	// This["TitleTextColor"] = "Color";
+	// This["TitleFont"] = "Font";
+	This["ToolTip"] = "LocalStringType";
+	// This["ToolTipRepresentation"] = "TooltipRepresentation";
+	// This["Shortcut"] = "ShortCutType";
+	This["Width"] = "Decimal";
+	This["Height"] = "Decimal";
+	// This["HorizontalStretch"] = "BWAValue";
+	// This["VerticalStretch"] = "BWAValue";
+	// This["GroupHorizontalAlign"] = "ItemHorizontalAlignment";
+	// This["GroupVerticalAlign"] = "ItemVerticalAlignment";
+	Return This;
+EndFunction // GroupBase()
+
 Function FormChildItems()
 	This = Object();
 	Items = This.Items;
-	Items["UsualGroup"] = FormUsualGroup();
+	Items["UsualGroup"] = UsualGroup();
 	Return This;
 EndFunction // FormChildItems()
 
-Function FormUsualGroup()
-	This = Record(FormItemBase());
-	This["HorizontalAlign"] = "String"; //Enums.ItemHorizontalLocation;
+Function UsualGroup()
+	This = Record(GroupBase());
+	// This["Group"] = "FormChildrenGroup";
+	// This["ChildrenAlign"] = "FormChildrenAlign";
+	// This["HorizontalSpacing"] = "FormItemSpacing";
+	// This["VerticalSpacing"] = "FormItemSpacing";
+	This["HorizontalAlign"] = "String"; //Enums.ItemHorizontalAlignment; (ItemHorizontalLocation)
+	// This["VerticalAlign"] = "ItemVerticalAlignment";
+	// This["Behavior"] = "UsualGroupBehavior";
+	This["CollapsedRepresentationTitle"] = "LocalStringType";
+	This["Collapsed"] = "Boolean";
+	// This["ControlRepresentation"] = "UsualGroupControlRepresentation";
+	// This["Representation"] = "UsualGroupRepresentation";
+	This["ShowLeftMargin"] = "Boolean";
 	This["United"] = "Boolean";
+	// This["ChildItemsWidth"] = "FormChildrenWidth";
+	This["Format"] = "LocalStringType";
 	This["ShowTitle"] = "Boolean";
-	This["ChildItems"] = "FormChildItems";
+	This["TitleDataPath"] = "LFEDataPath";
+	// This["BackColor"] = "Color";
+	// This["ThroughAlign"] = "UsualGroupThroughAlign";
 	Return This;
-EndFunction // FormUsualGroup()
+EndFunction // UsualGroup()
 
 #Region Events
 
@@ -2755,17 +2847,41 @@ Function FormAttributes()
 	This = Object();
 	Items = This.Items;
 	Items["Attribute"] = FormAttribute();
+	// Items["ConditionalAppearance"] = "ConditionalAppearance";
 	Return This;
 EndFunction // FormAttributes()
 
 Function FormAttribute()
 	This = Record();
 	This["name"] = "String";
+	This["id"] = "Decimal";
+	This["Type"] = TypeDescription();
 	This["Title"] = "LocalStringType";
+	This["View"] = "String"; //Enums.AdjustableBoolean;
+	This["Edit"] = "String"; //Enums.AdjustableBoolean;
+	This["MainAttribute"] = "Boolean";
 	This["SavedData"] = "Boolean";
+	This["FillCheck"] = "String"; //Enums.FillChecking
+	This["UseAlways"] = ContentType();
+	This["Save"] = ContentType();
+	This["FunctionalOptions"] = FunctionalOptions();
 	This["Columns"] = FormAttributeColumns();
 	Return This;
 EndFunction // FormAttribute()
+
+Function ContentType()
+	This = Object();
+	Items = This.Items;
+	Items["Field"] = "LFEDataPath";
+	Return This;
+EndFunction // ContentType()
+
+Function FunctionalOptions()
+	This = Object();
+	Items = This.Items;
+	Items["Item"] = "MDObjectRef";
+	Return This;
+EndFunction // FunctionalOptions()
 
 #Region Columns
 
@@ -2773,13 +2889,28 @@ Function FormAttributeColumns()
 	This = Object();
 	Items = This.Items;
 	Items["Column"] = FormAttributeColumn();
+	Items["AdditionalColumns"] = FormAttributeAdditionalColumns();
 	Return This;
 EndFunction // FormAttributeColumns()
+
+Function FormAttributeAdditionalColumns()
+	This = Object();
+	Attributes = This.Attributes;
+	Attributes["table"] = "LFEDataPath";
+	Items = This.Items;
+	Items["Column"] = FormAttributeColumn();
+	Return This;
+EndFunction // FormAttributeAdditionalColumns()
 
 Function FormAttributeColumn()
 	This = Record();
 	This["name"] = "String";
+	This["id"] = "Decimal";
 	This["Title"] = "LocalStringType";
+	This["View"] = "String"; //Enums.AdjustableBoolean;
+	This["Edit"] = "String"; //Enums.AdjustableBoolean;
+	This["FillCheck"] = "String"; //Enums.FillChecking
+	This["FunctionalOptions"] = FunctionalOptions();
 	Return This;
 EndFunction // FormAttributeColumn()
 
