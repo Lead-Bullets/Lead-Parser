@@ -1,5 +1,5 @@
 
-AttachScript(".\src\XMLParser\Ext\ObjectModule.bsl", "Parser");
+AttachScript(".\src\MetaParser\Ext\ObjectModule.bsl", "Parser");
 
 XMLReader = New XMLReader;
 XMLReader.OpenFile("C:\temp\RUERPNEW\Documents\ЗаказКлиента.xml");
